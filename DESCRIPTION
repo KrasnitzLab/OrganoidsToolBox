@@ -1,0 +1,30 @@
+Package: OrganoidsToolBox
+Type: Package
+Title: Toolbox for organoids analyses using drug screening and RNA-sequencing
+Description: This package is devoted to analyzing organoids related data. The 
+    principal focus is to run analyses on drug screening dataset. However, 
+    RNA-sequencing analyses are also included.
+Version: 0.0.1
+Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
+    role=c("aut"), comment = c(ORCID = "0000-0002-0802-1071")),
+    person("Astrid", "Deschênes", email="adeschen@hotmail.com",
+    role=c("cre", "aut"), comment = c(ORCID = "0000-0001-7846-6749")),
+    person("Alexander", "Krasnitz", email="krasnitz@cshl.edu",
+    role=c("aut")))
+License: Artistic-2.0
+Encoding: UTF-8
+NeedsCompilation: no
+VignetteBuilder: knitr
+Depends: R (>= 4.0),
+    stats,
+    utils
+Imports: S4Vectors,
+Suggests: testthat,
+    knitr,
+    rmarkdown,
+    BiocStyle,
+    withr
+BugReports: https://github.com/adeschen/OrganoidsToolBox/issues
+URL: https://adeschen.github.io/OrganoidsToolBox/
+biocViews: Software, Sequencing, WholeGenome, Genetics
+RoxygenNote: 7.1.2

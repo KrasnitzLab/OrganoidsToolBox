@@ -1,0 +1,106 @@
+---
+title: "Toolbox for organoids analyses using drug screening and RNA-sequencing"
+author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+output:
+  BiocStyle::html_document:
+    number_sections: yes
+    toc: true
+  pkgdown:
+    number_sections: yes
+    as_is: true
+urlcolor: darkred
+linkcolor: darkred
+bibliography: aicsBiblio.bibtex
+vignette: >
+  %\VignetteIndexEntry{Toolbox for organoids analyses using drug screening and RNA-sequencing}
+  %\VignettePackage{OrganoidsToolBox}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r style, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
+BiocStyle::markdown()
+
+suppressPackageStartupMessages({
+  library(knitr)
+  library(OrganoidsToolBox)
+})
+
+set.seed(121444)
+```
+
+<br />
+**Package**: `r Rpackage("OrganoidsToolBox")`<br />
+**Authors**: `r packageDescription("OrganoidsToolBox")[["Author"]]`<br />
+**Version**: `r packageDescription("OrganoidsToolBox")$Version`<br />
+**Compiled date**: `r Sys.Date()`<br />
+**License**: `r packageDescription("OrganoidsToolBox")[["License"]]`<br />
+
+
+# Licensing 
+
+The `r Githubpkg("KrasnitzLab/OrganoidsToolBox")` package and the underlying 
+`r Githubpkg("KrasnitzLab/OrganoidsToolBox")` code are distributed under  
+the TODO license. You are free to use and 
+redistribute this software.  
+
+<br>
+<br>
+
+# Citing
+
+If you use the **OrganoidsToolBox** package for a publication, we would ask 
+you to cite the following:
+
+> TODO 
+
+<br>
+<br>
+
+# Introduction
+TODO
+
+<br>
+<br>
+
+# Installation
+
+To install the latest version accessible on the 
+[OrganoidsToolBox Github Website](https://github.com/KrasnitzLab/OrganoidsToolBox "OrganoidsToolBox Github Site"), 
+the `r CRANpkg("devtools")` package is required.
+
+```{r installDemo01, eval=FALSE}
+## Load required package
+library(devtools)
+
+## Install the latest version of OrganoidsToolBox
+devtools::install_github('KrasnitzLab/OrganoidsToolBox')
+```
+
+<br>
+<br>
+
+
+# Main Steps
+
+TODO
+
+
+<br>
+<br>
+
+# Session info
+
+Here is the output of `sessionInfo()` on the system on which this document was 
+compiled:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+<br>
+<br>
+
+
+# References
+
