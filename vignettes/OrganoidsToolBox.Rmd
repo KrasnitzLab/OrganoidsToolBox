@@ -10,7 +10,6 @@ output:
     as_is: true
 urlcolor: darkred
 linkcolor: darkred
-bibliography: aicsBiblio.bibtex
 vignette: >
   %\VignetteIndexEntry{Toolbox for organoids analyses using drug screening and RNA-sequencing}
   %\VignettePackage{OrganoidsToolBox}
