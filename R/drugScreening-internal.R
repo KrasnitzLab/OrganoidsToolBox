@@ -58,10 +58,10 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
     orgDR.avr <- drugData[which(drugData$dosage_type == doseType), ]
 
     ## Select the specified drug
-    orgDR.avr <- orgDR.avr[which(drugData$drug_a == drugName &
-                                     drugData$drug_b == "N/A" &
-                                     drugData$drug_c == "N/A" &
-                                     drugData$drug_background == "N/A"), ]
+    orgDR.avr <- orgDR.avr[which(orgDR.avr$drug_a == drugName &
+                                     orgDR.avr$drug_b == "N/A" &
+                                     orgDR.avr$drug_c == "N/A" &
+                                     orgDR.avr$drug_background == "N/A"), ]
 
     ## Remove duplicate
     orgDR.avr.u <- orgDR.avr[-1 * which(duplicated(orgDR.avr[,
@@ -71,22 +71,25 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
     results[["quantile"]] <- list()
 
     ## Calculate upper and lower quantile
-    results[["lower"]] <- unname(quantile(orgDR.avr.u$relative_auc, quantile))
-    results[["upper"]] <- unname(quantile(orgDR.avr.u$relative_auc,
-                                                                1 - quantile))
+    results[["quantile"]][["lower"]] <-
+                        unname(quantile(orgDR.avr.u$relative_auc, quantile))
+    results[["quantile"]][["upper"]] <-
+                        unname(quantile(orgDR.avr.u$relative_auc, 1 - quantile))
     results[["dataset"]] <- orgDR.avr.u
 
     ## Select sensitive organoids
     extreme <- orgDR.avr.u[which(orgDR.avr.u$relative_auc <=
-                                            results[["lower"]]),]
+                                        results[["quantile"]][["lower"]]),]
     extreme$GROUP <- rep("SENSITIVE", nrow(extreme))
 
     ## Select resistant organoids
     extreme2 <- orgDR.avr.u[which(orgDR.avr.u$relative_auc >=
-                                            results[["upper"]]),]
+                                        results[["quantile"]][["upper"]]),]
     extreme2$GROUP <- rep("RESISTANT", nrow(extreme2))
 
-    results[["extreme"]] <- rbind(extreme, extreme2)
+    final <- rbind(extreme, extreme2)
+    final <- final[, c("organoid_id", "relative_auc", "GROUP")]
+    results[["extreme"]] <- final[order(final$relative_auc, decreasing=FALSE),]
 
     return(results)
 }
