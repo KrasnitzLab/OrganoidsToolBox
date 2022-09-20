@@ -20,6 +20,6 @@ package is required.
 ## Bugs/Feature requests ##
 
 If you have any bugs or feature requests, 
-[let us know](https://github.com/KrasnitzLab/CNVMetrics/issues). 
+[let us know](https://github.com/KrasnitzLab/OrganoidsToolBox/issues). 
 
 Thanks!
