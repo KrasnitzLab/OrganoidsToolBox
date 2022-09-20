@@ -25,7 +25,7 @@
 #' of the selected organoids. If \code{"ALL"}, all organoids are used for the
 #' selection. Default: \code{"ALL"}.
 #'
-#' @param ancestryInformation a TODO. If `ancestry` is \code{"ALL"}, this
+#' @param ancestry a TODO. If `ancestry` is \code{"ALL"}, this
 #' field is not used.
 #'
 #' @param quantile a single positive \code{numeric} between 0 and 0.5
@@ -42,19 +42,18 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-selectOrgFromOneDrug <- function(drugScreening, drugName, study,
+selectOrgForOneDrug <- function(drugScreening, drugName, study,
             type, ancestry=c("ALL", "AFR", "EUR", "AMR", "EAS", "SAS"),
             quantile=1/3) {
-
 
     ## The drugName parameter must be a single character string
     if (!(is.character(drugName) && length(drugName) == 1)) {
         stop("The \'drugName\' must be a single character string.")
     }
 
-    ## The study parameter must be a single character string
-    if (!(is.character(study) && length(study) == 1)) {
-        stop("The \'study\' must be a single character string.")
+    ## The study parameter must be a vector of character string
+    if (!(is.character(study))) {
+        stop("The \'study\' must be a vector of character strings.")
     }
 
     ## The type parameter must be a single character string
@@ -67,6 +66,7 @@ selectOrgFromOneDrug <- function(drugScreening, drugName, study,
         stop("The \'quantile\' must be a single positive numeric between",
                     " 0 and 0.5.")
     }
+
 
     return(0L)
 }
