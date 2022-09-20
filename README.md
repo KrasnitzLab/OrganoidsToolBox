@@ -17,3 +17,9 @@ package is required.
      devtools::install_github('KrasnitzLab/OrganoidsToolBox')
 
 
+## Bugs/Feature requests ##
+
+If you have any bugs or feature requests, 
+[let us know](https://github.com/KrasnitzLab/CNVMetrics/issues). 
+
+Thanks!
