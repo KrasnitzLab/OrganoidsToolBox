@@ -53,14 +53,13 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 
     ## Check for mandatory columns in drugScreening
     if (!all(c('organoid_id', 'timestamp', 'study', 'screen_type',
-                'dosage_type', 'drug_a', 'drug_b', 'drug_c',
-                'drug_background', 'relative_auc') %in%
-              colnames(drugScreening))) {
+            'dosage_type', 'drug_a', 'drug_b', 'drug_c', 'drug_background',
+            'relative_auc') %in% colnames(drugScreening))) {
         stop("Mandatory columns are missing from the drug screening ",
-             "dataset. The mandatory columns are: \'organoid_id\', ",
-             "\'timestamp\', \'study\', \'screen_type\', \'dosage_type\', ",
-             "\'drug_a\', \'drug_b\', \'drug_c\', \'drug_background\' and ",
-             "\'relative_auc\'.")
+            "dataset. The mandatory columns are: \'organoid_id\', ",
+            "\'timestamp\', \'study\', \'screen_type\', \'dosage_type\', ",
+            "\'drug_a\', \'drug_b\', \'drug_c\', \'drug_background\' and ",
+            "\'relative_auc\'.")
     }
 
     ## The drugName parameter must be a single character string

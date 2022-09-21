@@ -114,3 +114,42 @@ test_that("selectOrgForOneDrug() must return error when doseType is a vector of 
             quantile=1/3), error_message, fixed=TRUE)
 })
 
+
+test_that("selectOrgForOneDrug() must return error when quantile is a string", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    error_message <- paste0("The \'quantile\' must be a single positive ",
+                                "numeric between 0 and 0.5.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+            study="MEGA", screenType="TEST", doseType="Averaged",
+            quantile="1/3"), error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgForOneDrug() must return error when quantile negative numeric", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    error_message <- paste0("The \'quantile\' must be a single positive ",
+                            "numeric between 0 and 0.5.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+            study="MEGA", screenType="TEST", doseType="Averaged",
+            quantile=-0.02), error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgForOneDrug() must return error when quantile above 0.5", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    error_message <- paste0("The \'quantile\' must be a single positive ",
+                            "numeric between 0 and 0.5.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+            study="MEGA", screenType="TEST", doseType="Averaged",
+            quantile=0.5000001), error_message, fixed=TRUE)
+})
+
