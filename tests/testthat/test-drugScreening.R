@@ -87,3 +87,30 @@ test_that("selectOrgForOneDrug() must return error when screenType is a numeric"
                 study="MEGA", screenType=33, doseType="Averaged",
                 quantile=1/3), error_message, fixed=TRUE)
 })
+
+
+test_that("selectOrgForOneDrug() must return error when doseType is a numeric", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    error_message <- paste0("The \'doseType\' must be a single character ",
+                                    "string.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+                    study="MEGA", screenType="TEST", doseType=22,
+                    quantile=1/3), error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgForOneDrug() must return error when doseType is a vector of strings", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    error_message <- paste0("The \'doseType\' must be a single character ",
+                                        "string.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+            study="MEGA", screenType="TEST", doseType=c("TypeA", "TypeB"),
+            quantile=1/3), error_message, fixed=TRUE)
+})
+
