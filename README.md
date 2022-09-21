@@ -1,5 +1,10 @@
+<!-- badges: start -->
 
 [![codecov](https://codecov.io/gh/KrasnitzLab/OrganoidsToolBox/branch/main/graph/badge.svg?token=558IYKAQG1)](https://codecov.io/gh/KrasnitzLab/OrganoidsToolBox)
+[![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
+
+<!-- badges: end -->
+
 
 # Organoids Tool Box
 Enabling organoid analyses using drug sreening, RNA-seq, exome-seq
@@ -13,7 +18,7 @@ package is required.
      ## Load required package
      library(devtools)
 
-     ## Install the latest version of RAIDS
+     ## Install the latest version of OrganoidsToolBox
      devtools::install_github('KrasnitzLab/OrganoidsToolBox')
 
 
