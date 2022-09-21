@@ -6,8 +6,8 @@ output:
         number_sections: yes
         toc: true
     pkgdown:
-      number_sections: yes
-      as_is: true
+        number_sections: yes
+        as_is: true
 urlcolor: darkred
 linkcolor: darkred
 vignette: >
