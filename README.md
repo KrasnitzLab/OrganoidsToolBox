@@ -18,7 +18,7 @@ package is required.
      ## Load required package
      library(devtools)
 
-     ## Install the latest version of RAIDS
+     ## Install the latest version of OrganoidsToolBox
      devtools::install_github('KrasnitzLab/OrganoidsToolBox')
 
 
