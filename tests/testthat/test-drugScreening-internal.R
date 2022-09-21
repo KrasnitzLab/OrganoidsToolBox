@@ -9,22 +9,6 @@ library(OrganoidsToolBox)
 
 context("findOneDrugQuantile() results")
 
-test_that("findOneDrugQuantile() must return error when drug information missing columns", {
-
-    drugData <- data.frame(organoid_id=c("A", "B", "C"), dosage_type=c("TOP",
-                    "TOP", "TOP"), drug_a=c("Metho", "Metho", "Placebo"),
-                    relative_auc=c(43, 32, 22), stringsAsFactors=FALSE)
-
-    error_message <- paste0("Mandatory columns are missing from the ",
-        "drug screening dataset. The mandatory columns are: \'organoid_id\', ",
-        "\'timestamp\', \'dosage_type\', \'drug_a\', \'drug_b\', \'drug_c\', ",
-        "\'drug_background\' and \'relative_auc\'.")
-
-    expect_error(OrganoidsToolBox:::findOneDrugQuantile(drugData=drugData,
-        drugName="Metho", doseType="Averaged", quantile=1/3),
-        error_message, fixed=TRUE)
-})
-
 
 test_that("findOneDrugQuantile() must return expected results 01", {
 
@@ -73,4 +57,20 @@ test_that("findOneDrugQuantile() must return expected results 02", {
                  expected[["extreme"]]$organoid_id)
     expect_equal(result[["extreme"]]$GROUP,
                  expected[["extreme"]]$GROUP)
+})
+
+
+
+
+test_that("findOneDrugQuantile() must return expected error when not enough data", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+    drug <- drug[1:10,]
+
+    error_message <- paste0("There is not enough data (less than 3 organoids) ",
+                    "with the current critera to run quantile analysis.")
+
+    expect_error(OrganoidsToolBox:::findOneDrugQuantile(drugData=drug,
+        drugName="Methotrexate", doseType="Averaged", quantile=1/4),
+        error_message, fixed=TRUE)
 })
