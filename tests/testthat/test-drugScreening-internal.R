@@ -60,8 +60,6 @@ test_that("findOneDrugQuantile() must return expected results 02", {
 })
 
 
-
-
 test_that("findOneDrugQuantile() must return expected error when not enough data", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
