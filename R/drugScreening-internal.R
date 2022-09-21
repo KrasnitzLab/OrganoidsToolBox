@@ -45,16 +45,6 @@
 findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
                                             quantile) {
 
-    ## Check for mandatory columns in drugData
-    if (! all(c('organoid_id', 'timestamp', 'dosage_type', 'drug_a',
-                'drug_b', 'drug_c', 'drug_background', 'relative_auc') %in%
-                    colnames(drugData))) {
-        stop("Mandatory columns are missing from the drug screening ",
-                "dataset. The mandatory columns are: \'organoid_id\', ",
-                "\'timestamp\', \'dosage_type\', \'drug_a\', \'drug_b\', ",
-                "\'drug_c\', \'drug_background\' and \'relative_auc\'.")
-    }
-
     ## Select the specified dose type
     orgDR.avr <- drugData[which(drugData$dosage_type == doseType), ]
 
@@ -70,10 +60,11 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
                                 c("organoid_id", "timestamp", "drug_a")])),]
 
     ## Check that the number of rows is sufficient
-    if (nrow(orgDR.avr) < 3) {
+    if (nrow(orgDR.avr.u) < 3) {
         stop("There is not enough data (less than 3 organoids) with ",
                 "the current critera to run quantile analysis.")
     }
+
     results <- list()
     results[["quantile"]] <- list()
 
