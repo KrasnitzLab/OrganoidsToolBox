@@ -2,27 +2,27 @@
 title: "Toolbox for organoids analyses using drug screening and RNA-sequencing"
 author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
-  BiocStyle::html_document:
-    number_sections: yes
-    toc: true
-  pkgdown:
-    number_sections: yes
-    as_is: true
+    BiocStyle::html_document:
+        number_sections: yes
+        toc: true
+    pkgdown:
+      number_sections: yes
+      as_is: true
 urlcolor: darkred
 linkcolor: darkred
 vignette: >
-  %\VignetteIndexEntry{Toolbox for organoids analyses using drug screening and RNA-sequencing}
-  %\VignettePackage{OrganoidsToolBox}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{Toolbox for organoids analyses using drug screening and RNA-sequencing}
+    %\VignettePackage{OrganoidsToolBox}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r style, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
 BiocStyle::markdown()
 
 suppressPackageStartupMessages({
-  library(knitr)
-  library(OrganoidsToolBox)
+    library(knitr)
+    library(OrganoidsToolBox)
 })
 
 set.seed(121444)
@@ -40,7 +40,7 @@ set.seed(121444)
 
 The `r Githubpkg("KrasnitzLab/OrganoidsToolBox")` package and the underlying 
 `r Githubpkg("KrasnitzLab/OrganoidsToolBox")` code are distributed under  
-the TODO license. You are free to use and 
+the Artistic-2.0 license. You are free to use and 
 redistribute this software.  
 
 <br>
