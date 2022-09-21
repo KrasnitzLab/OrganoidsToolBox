@@ -10,8 +10,8 @@ selectOrgForOneDrug(
   drugScreening,
   drugName,
   study,
-  type,
-  ancestry = c("ALL", "AFR", "EUR", "AMR", "EAS", "SAS"),
+  screenType,
+  doseType = "Averaged",
   quantile = 1/3
 )
 }
@@ -22,18 +22,24 @@ to run the organoid selection.}
 
 \item{drugName}{a single \code{character} string representing the name of
 the drug selected for the analyses. The drug must be present in the drug
-screening file.}
+screening dataset. The drug name can be found in the 'drug_a' column of the
+drug screening dataset.}
 
 \item{study}{a single \code{character} string representing the name of
 the study selected for the analyses. The study must be present in the drug
-screening file.}
+screening dataset. The study can be found in the 'study' column of the
+drug screening dataset.}
 
-\item{type}{a single \code{character} string representing the type of
-study selected for the analyses. The type must be present in the drug
-screening file.}
+\item{screenType}{a \code{vector} of \code{character} string representing
+the type of
+screening selected for the analyses. The type must be present in the drug
+screening dataset.  The screenType can be found in the 'screen_type'
+column of the
+drug screening dataset.}
 
-\item{ancestry}{a TODO. If `ancestry` is \code{"ALL"}, this
-field is not used.}
+\item{doseType}{a single \code{character} string representing the type of
+dosage selected for the analyses. The type must be present in the drug
+screening dataset.}
 
 \item{quantile}{a single positive \code{numeric} between 0 and 0.5
 indicating the quantile used to select the organoids. Default: \code{1/3}.}

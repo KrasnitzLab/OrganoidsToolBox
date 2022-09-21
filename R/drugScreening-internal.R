@@ -5,6 +5,7 @@
 #' for a specific drug. The organoids with an average AUC equal or inferior to
 #' the specified quantile are considered sensitive while the organoids with an
 #' average AUC superior or equal to (1 - quantile) are considered resistant.
+#' The function requires a minimum of 3 values to run the quantile analysis.
 #'
 #' @param drugData a \code{data.frame} containing the drug screening
 #' information. The mandatory columns are: 'organoid_id', 'timestamp',
@@ -18,7 +19,7 @@
 #' selected dosage type. Default: \code{"Averaged"}.
 #'
 #' @param quantile a single positive \code{numeric} between \code{0} and
-#' \code{0.5} representing the cutoff for the organdois selection.
+#' \code{0.5} representing the cutoff for the organoids selection.
 #'
 #' @return a \code{list} containing 3 entries:
 #' \itemize{
@@ -47,7 +48,7 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
     ## Check for mandatory columns in drugData
     if (! all(c('organoid_id', 'timestamp', 'dosage_type', 'drug_a',
                 'drug_b', 'drug_c', 'drug_background', 'relative_auc') %in%
-              colnames(drugData))) {
+                    colnames(drugData))) {
         stop("Mandatory columns are missing from the drug screening ",
                 "dataset. The mandatory columns are: \'organoid_id\', ",
                 "\'timestamp\', \'dosage_type\', \'drug_a\', \'drug_b\', ",
@@ -58,23 +59,29 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
     orgDR.avr <- drugData[which(drugData$dosage_type == doseType), ]
 
     ## Select the specified drug
-    orgDR.avr <- orgDR.avr[which(orgDR.avr$drug_a == drugName &
-                                     orgDR.avr$drug_b == "N/A" &
-                                     orgDR.avr$drug_c == "N/A" &
-                                     orgDR.avr$drug_background == "N/A"), ]
+    orgDR.avr <- orgDR.avr[which(tolower(orgDR.avr$drug_a) ==
+                                        tolower(drugName) &
+                                        orgDR.avr$drug_b == "N/A" &
+                                        orgDR.avr$drug_c == "N/A" &
+                                        orgDR.avr$drug_background == "N/A"), ]
 
     ## Remove duplicate
     orgDR.avr.u <- orgDR.avr[-1 * which(duplicated(orgDR.avr[,
                                 c("organoid_id", "timestamp", "drug_a")])),]
 
+    ## Check that the number of rows is sufficient
+    if (nrow(orgDR.avr) < 3) {
+        stop("There is not enough data (less than 3 organoids) with ",
+                "the current critera to run quantile analysis.")
+    }
     results <- list()
     results[["quantile"]] <- list()
 
     ## Calculate upper and lower quantile
     results[["quantile"]][["lower"]] <-
-                        unname(quantile(orgDR.avr.u$relative_auc, quantile))
+                    unname(quantile(orgDR.avr.u$relative_auc, quantile))
     results[["quantile"]][["upper"]] <-
-                        unname(quantile(orgDR.avr.u$relative_auc, 1 - quantile))
+                    unname(quantile(orgDR.avr.u$relative_auc, 1 - quantile))
     results[["dataset"]] <- orgDR.avr.u
 
     ## Select sensitive organoids

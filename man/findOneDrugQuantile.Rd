@@ -21,7 +21,7 @@ selected drug.}
 selected dosage type. Default: \code{"Averaged"}.}
 
 \item{quantile}{a single positive \code{numeric} between \code{0} and
-\code{0.5} representing the cutoff for the organdois selection.}
+\code{0.5} representing the cutoff for the organoids selection.}
 }
 \value{
 a \code{list} containing 3 entries:
@@ -39,6 +39,7 @@ The function extract the sensitive and resistant organoids
 for a specific drug. The organoids with an average AUC equal or inferior to
 the specified quantile are considered sensitive while the organoids with an
 average AUC superior or equal to (1 - quantile) are considered resistant.
+The function requires a minimum of 3 values to run the quantile analysis.
 }
 \examples{
 

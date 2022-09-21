@@ -11,22 +11,24 @@
 #'
 #' @param drugName a single \code{character} string representing the name of
 #' the drug selected for the analyses. The drug must be present in the drug
-#' screening file.
+#' screening dataset. The drug name can be found in the 'drug_a' column of the
+#' drug screening dataset.
 #'
 #' @param study a single \code{character} string representing the name of
 #' the study selected for the analyses. The study must be present in the drug
-#' screening file.
+#' screening dataset. The study can be found in the 'study' column of the
+#' drug screening dataset.
 #'
-#' @param type a single \code{character} string representing the type of
-#' study selected for the analyses. The type must be present in the drug
-#' screening file.
+#' @param screenType a \code{vector} of \code{character} string representing
+#' the type of
+#' screening selected for the analyses. The type must be present in the drug
+#' screening dataset.  The screenType can be found in the 'screen_type'
+#' column of the
+#' drug screening dataset.
 #'
-#' @param ancestry a single \code{character} string representing the ancestry
-#' of the selected organoids. If \code{"ALL"}, all organoids are used for the
-#' selection. Default: \code{"ALL"}.
-#'
-#' @param ancestry a TODO. If `ancestry` is \code{"ALL"}, this
-#' field is not used.
+#' @param doseType a single \code{character} string representing the type of
+#' dosage selected for the analyses. The type must be present in the drug
+#' screening dataset.
 #'
 #' @param quantile a single positive \code{numeric} between 0 and 0.5
 #' indicating the quantile used to select the organoids. Default: \code{1/3}.
@@ -43,22 +45,42 @@
 #' @encoding UTF-8
 #' @export
 selectOrgForOneDrug <- function(drugScreening, drugName, study,
-            type, ancestry=c("ALL", "AFR", "EUR", "AMR", "EAS", "SAS"),
-            quantile=1/3) {
+            screenType, doseType="Averaged", quantile=1/3) {
+
+    if (!is.data.frame(drugScreening)) {
+        stop("The \'drugScreening\' must be a data.frame.")
+    }
+
+    ## Check for mandatory columns in drugScreening
+    if (!all(c('organoid_id', 'timestamp', 'study', 'screen_type',
+                'dosage_type', 'drug_a', 'drug_b', 'drug_c',
+                'drug_background', 'relative_auc') %in%
+              colnames(drugScreening))) {
+        stop("Mandatory columns are missing from the drug screening ",
+             "dataset. The mandatory columns are: \'organoid_id\', ",
+             "\'timestamp\', \'study\', \'screen_type\', \'dosage_type\',
+             \'drug_a\', \'drug_b\', \'drug_c\', \'drug_background\' and ",
+             "\'relative_auc\'.")
+    }
 
     ## The drugName parameter must be a single character string
     if (!(is.character(drugName) && length(drugName) == 1)) {
         stop("The \'drugName\' must be a single character string.")
     }
 
-    ## The study parameter must be a vector of character string
+    ## The study parameter must be a vector of character strings
     if (!(is.character(study))) {
         stop("The \'study\' must be a vector of character strings.")
     }
 
-    ## The type parameter must be a single character string
-    if (!(is.character(type) && length(type) == 1)) {
-        stop("The \'type\' must be a single character string.")
+    ## The screenType parameter must be a vector of character strings
+    if (!(is.character(screenType))) {
+        stop("The \'screenType\' must be a vector of character strings.")
+    }
+
+    ## The doseType parameter must be a single character string
+    if (!(is.character(doseType) && length(doseType) == 1)) {
+        stop("The \'doseType\' must be a single character string.")
     }
 
     ## The quantile must be a single positive numeric between 0 and 0.5
@@ -67,6 +89,8 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
                     " 0 and 0.5.")
     }
 
+    results <- findOneDrugQuantile(drugData=drugScreening, drugName=drugName,
+                        doseType="Averaged", quantile=quantile)
 
     return(0L)
 }
