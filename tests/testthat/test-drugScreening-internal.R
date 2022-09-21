@@ -4,7 +4,7 @@ library(OrganoidsToolBox)
 
 
 #############################################################################
-### Tests plotMetric() results
+### Tests findOneDrugQuantile() results
 #############################################################################
 
 context("findOneDrugQuantile() results")
