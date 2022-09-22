@@ -1,4 +1,3 @@
-
 #' @title Select the organoids with sensitive and resistant behavior for a
 #' specific drug screening
 #'
@@ -7,7 +6,9 @@
 #'
 #' @param drugScreening a single \code{character} string representing the path
 #' and name of the drug screening file that contains the information needed
-#' to run the organoid selection.
+#' to run the organoid selection. Those columns are mandatory: 'organoid_id',
+#' 'timestamp', 'study', 'screen_type', 'dosage_type',
+#' 'drug_a', 'drug_b', 'drug_c', 'drug_background' and 'relative_auc'.
 #'
 #' @param drugName a single \code{character} string representing the name of
 #' the drug selected for the analyses. The drug must be present in the drug
@@ -33,7 +34,18 @@
 #' @param quantile a single positive \code{numeric} between 0 and 0.5
 #' indicating the quantile used to select the organoids. Default: \code{1/3}.
 #'
-#' @return a TODO
+#' @return an object of class "\code{DrugAUCQuantile}" which contains the
+#' sensitive and resistant organoids for a specific drug. This object is a
+#' \code{list} with the following 3 components:
+#' \itemize{
+#' \item{quantile}{the \code{upper} and \code{lower} quantiles for the
+#' specified drug.}
+#' \item{dataset}{a \code{data.frame} containing the data used to
+#' calculate the quantiles. }
+#' \item{extreme}{a \code{data.frame} containing the sensitive and
+#' resistant organoids according to the specified quantiles.
+#' The \code{data.frame} also contains the relative AUC. }
+#' }
 #'
 #' @examples
 #'
@@ -47,49 +59,77 @@
 selectOrgForOneDrug <- function(drugScreening, drugName, study,
             screenType, doseType="Averaged", quantile=1/3) {
 
-    if (!is.data.frame(drugScreening)) {
-        stop("The \'drugScreening\' must be a data.frame.")
+    ## Validate input types
+    validateSelectOrgForOneDrug(drugScreening=drugScreening, drugName=drugName,
+        study=study, screenType=screenType, doseType=doseType,
+        quantile=quantile)
+
+    ## The drug must be present in the drug dataset
+    if (!(tolower(drugName) %in% tolower(unique(drugScreening$drug_a)))) {
+        stop("The drug \'", drugName, "\' is not present in the drug ",
+             "screening dataset.")
     }
 
-    ## Check for mandatory columns in drugScreening
-    if (!all(c('organoid_id', 'timestamp', 'study', 'screen_type',
-            'dosage_type', 'drug_a', 'drug_b', 'drug_c', 'drug_background',
-            'relative_auc') %in% colnames(drugScreening))) {
-        stop("Mandatory columns are missing from the drug screening ",
-            "dataset. The mandatory columns are: \'organoid_id\', ",
-            "\'timestamp\', \'study\', \'screen_type\', \'dosage_type\', ",
-            "\'drug_a\', \'drug_b\', \'drug_c\', \'drug_background\' and ",
-            "\'relative_auc\'.")
+    ## The study must be present in the drug dataset
+    if (!(tolower(study) %in% tolower(unique(drugScreening$study)))) {
+        stop("The study \'", study, "\' is not present in the drug ",
+                "screening dataset.")
     }
 
-    ## The drugName parameter must be a single character string
-    if (!(is.character(drugName) && length(drugName) == 1)) {
-        stop("The \'drugName\' must be a single character string.")
+    ## The study must be present in the drug dataset
+    if (!any(tolower(screenType) %in%
+          tolower(unique(drugScreening$screen_type)))) {
+        stop("The screen type \'", screenType, "\' is not present in the ",
+                    "drug screening dataset.")
     }
 
-    ## The study parameter must be a vector of character strings
-    if (!(is.character(study))) {
-        stop("The \'study\' must be a vector of character strings.")
+    ## The doseType must be present in the drug dataset
+    if (!(tolower(doseType) %in%
+          tolower(unique(drugScreening$dosage_type)))) {
+        stop("The dossage type \'", doseType, "\' is not present in the ",
+                "drug screening dataset.")
     }
 
-    ## The screenType parameter must be a vector of character strings
-    if (!(is.character(screenType))) {
-        stop("The \'screenType\' must be a vector of character strings.")
-    }
+    ## Select the specified study
+    selectedDrugData <- drugScreening[which(tolower(drugScreening$study) ==
+                                                tolower(study)), ]
 
-    ## The doseType parameter must be a single character string
-    if (!(is.character(doseType) && length(doseType) == 1)) {
-        stop("The \'doseType\' must be a single character string.")
-    }
+    ## Select the specified screen type
+    selectedDrugData <- selectedDrugData[
+        which(tolower(selectedDrugData$screen_type) %in% tolower(screenType)), ]
 
-    ## The quantile must be a single positive numeric between 0 and 0.5
-    if (!(isSingleNumber(quantile) && quantile > 0.0 && quantile < 0.5)) {
-        stop("The \'quantile\' must be a single positive numeric between",
-                    " 0 and 0.5.")
-    }
-
-    results <- findOneDrugQuantile(drugData=drugScreening, drugName=drugName,
+    results <- findOneDrugQuantile(drugData=selectedDrugData, drugName=drugName,
                         doseType="Averaged", quantile=quantile)
 
-    return(0L)
+    # Return a list marked as an DrugAUCQuantile class
+    class(results) <- "DrugAUCQuantile"
+
+    return(results)
+}
+
+
+#' @title TODO
+#'
+#' @description The function TODO
+#'
+#' @param drugQuantile TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#'
+#' ## TODO
+#' drugName <- "Methotrexate"
+#'
+#' @author Astrid Deschênes, Pascal Belleau
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @export
+plotDrugAUCDistribution <- function(drugQuantile) {
+
+    ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
+    if (!is.DrugAUCQuantile(drugQuantile)) {
+        stop("\'drugQuantile\' must be a DrugAUCQuantile object.")
+    }
+
 }

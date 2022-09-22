@@ -19,6 +19,7 @@ Depends: R (>= 4.0),
     stats,
     utils
 Imports: S4Vectors,
+    methods
 Suggests: testthat,
     knitr,
     rmarkdown,
