@@ -16,9 +16,8 @@ selectOrgForOneDrug(
 )
 }
 \arguments{
-\item{drugScreening}{a single \code{character} string representing the path
-and name of the drug screening file that contains the information needed
-to run the organoid selection. Those columns are mandatory: 'organoid_id',
+\item{drugScreening}{a \code{data.frame} that contains the drug screening
+results. The mandatory columns: 'organoid_id',
 'timestamp', 'study', 'screen_type', 'dosage_type',
 'drug_a', 'drug_b', 'drug_c', 'drug_background' and 'relative_auc'.}
 
@@ -35,7 +34,7 @@ drug screening dataset.}
 \item{screenType}{a \code{vector} of \code{character} string representing
 the type of
 screening selected for the analyses. The type must be present in the drug
-screening dataset.  The screenType can be found in the 'screen_type'
+screening dataset. The screen type can be found in the 'screen_type'
 column of the
 drug screening dataset.}
 
@@ -66,8 +65,14 @@ quantile, as specified by user, for a specific drug screening.
 }
 \examples{
 
-## TODO
-drugName <- "Methotrexate"
+## Load drug screen dataset for 1 drug
+data(simpleDrugScreening)
+
+## Calculate the extreme organoids for the methotrexate drug screening
+## using a quantile of 1/3
+results <- selectOrgForOneDrug(drugScreening=simpleDrugScreening,
+    drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
+    doseType="Averaged", quantile=1/3)
 
 }
 \author{
