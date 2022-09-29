@@ -25,6 +25,7 @@ Suggests: testthat,
     rmarkdown,
     BiocStyle,
     withr
+LazyData: true
 BugReports: https://github.com/adeschen/OrganoidsToolBox/issues
 URL: https://adeschen.github.io/OrganoidsToolBox/
 biocViews: Software, Sequencing, WholeGenome, Genetics
