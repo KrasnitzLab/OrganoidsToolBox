@@ -11,6 +11,13 @@
 Enabling organoid analyses using drug sreening, RNA-seq, exome-seq
 
 
+## Documentation ##
+
+[OrganoidsToolBox Website](https://adeschen.github.io/OrganoidsToolBox/)
+
+[OrganoidsToolBox Get Started](https://adeschen.github.io/OrganoidsToolBox/articles/OrganoidsToolBox.html)
+
+
 ## Installation ##
 
 To install the latest accessible version of **OrganoidsToolBox**, the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
@@ -25,7 +32,7 @@ package is required.
 
 ## License ##
 
-This package and the underlying **_CNVMetrics_** code are distributed under 
+This package and the underlying **_OrganoidsToolBox_** code are distributed under 
 the Artistic license 2.0. You are free to use and redistribute this software. 
 
 For more information on Artistic 2.0 License see
