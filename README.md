@@ -23,6 +23,15 @@ package is required.
      devtools::install_github('KrasnitzLab/OrganoidsToolBox')
 
 
+## License ##
+
+This package and the underlying **_CNVMetrics_** code are distributed under 
+the Artistic license 2.0. You are free to use and redistribute this software. 
+
+For more information on Artistic 2.0 License see
+[http://opensource.org/licenses/Artistic-2.0](http://opensource.org/licenses/Artistic-2.0)
+
+
 ## Bugs/Feature requests ##
 
 If you have any bugs or feature requests, 
