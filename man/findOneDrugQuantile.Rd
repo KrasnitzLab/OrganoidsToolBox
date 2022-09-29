@@ -31,7 +31,8 @@ specified drug.}
 \item{dataset}{a \code{data.frame} containing the data used to
 calculate the quantiles. }
 \item{extreme}{a \code{data.frame} containing the sensitive and
-resistant organoids according to the specified quantiles. }
+resistant organoids according to the specified quantiles.
+The \code{data.frame} also contains the relative AUC. }
 }
 }
 \description{

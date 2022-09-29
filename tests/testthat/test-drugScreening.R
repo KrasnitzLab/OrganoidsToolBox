@@ -153,3 +153,128 @@ test_that("selectOrgForOneDrug() must return error when quantile above 0.5", {
             quantile=0.5000001), error_message, fixed=TRUE)
 })
 
+
+test_that("selectOrgForOneDrug() must return error when drug not in the dataset", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    drugName <- "Demo"
+
+    error_message <- paste0("The drug \'", drugName, "\' is not present ",
+                      "in the drug screening dataset.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName=drugName,
+            study="MEGA", screenType="TEST", doseType="Averaged",
+            quantile=0.2), error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgForOneDrug() must return error when study not in the dataset", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    study <- "Demo"
+
+    error_message <- paste0("The study \'", study, "\' is not present in ",
+                                "the drug screening dataset.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+            study=study, screenType="TEST", doseType="Averaged",
+            quantile=0.2), error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgForOneDrug() must return error when screen type not in the dataset", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    screenType <- "Demo"
+
+    error_message <- paste0("The screen type \'", screenType, "\' is not ",
+                                "present in the drug screening dataset.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+            study="MEGA-TEST", screenType=screenType, doseType="Averaged",
+            quantile=0.2), error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgForOneDrug() must return error when drug not in the dataset", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    screenType <- "Demo"
+
+    error_message <- paste0("The screen type \'", screenType, "\' is not ",
+                            "present in the drug screening dataset.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+        study="MEGA-TEST", screenType=screenType, doseType="Averaged",
+        quantile=0.2), error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgForOneDrug() must return error when drug not in the dataset", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
+
+    doseType <- "Demo"
+
+    error_message <- paste0("The dossage type \'", doseType, "\' is ",
+                                "not present in the drug screening dataset.")
+
+    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+        study="MEGA-TEST", screenType="TEST-01", doseType=doseType,
+        quantile=0.2), error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgForOneDrug() must return expected results 01", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    study <- "MEGA-TEST"
+
+    results <- selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+        study=study, screenType="TEST-01", doseType="Averaged", quantile=0.2)
+
+    expected <- list()
+    expected[["upper"]] <- 67.205871430000016
+    expected[["lower"]] <- 52.803599419999998
+
+    expected[["extreme"]] <- data.frame(organoid_id=c("hT3312", "hT1001",
+        "hT1082", "hT2212"), relative_auc=c(46.61113619000000340975,
+        52.61044455999999769347, 68.93725639000000171563, 75.67627993000000685697),
+        GROUP=c("SENSITIVE", "SENSITIVE", "RESISTANT", "RESISTANT"),
+        stringsAsFactors=FALSE)
+    rownames(expected$extreme) <- NULL
+
+    expect_true(inherits(results, "DrugAUCQuantile"))
+    expect_equal(results$quantile$lower, expected$lower)
+    expect_equal(results$quantile$upper, expected$upper)
+    expect_equal(results$extreme, expected$extreme)
+
+})
+
+
+
+test_that("selectOrgForOneDrug() must return expected results 01", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    study <- "MEGA-TEST"
+
+    results <- selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+        study=study, screenType=c("TEST-01", "TEST-02"), doseType="Averaged",
+        quantile=0.1)
+
+    expected <- list()
+    expected[["upper"]] <- 72.87627993000000969914
+    expected[["lower"]] <- 50.81065204900000509269
+
+    expect_true(is.DrugAUCQuantile(results))
+    expect_equal(results$quantile$lower, expected$lower)
+    expect_equal(results$quantile$upper, expected$upper)
+
+})
+

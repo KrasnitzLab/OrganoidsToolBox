@@ -18,7 +18,9 @@ selectOrgForOneDrug(
 \arguments{
 \item{drugScreening}{a single \code{character} string representing the path
 and name of the drug screening file that contains the information needed
-to run the organoid selection.}
+to run the organoid selection. Those columns are mandatory: 'organoid_id',
+'timestamp', 'study', 'screen_type', 'dosage_type',
+'drug_a', 'drug_b', 'drug_c', 'drug_background' and 'relative_auc'.}
 
 \item{drugName}{a single \code{character} string representing the name of
 the drug selected for the analyses. The drug must be present in the drug
@@ -45,7 +47,18 @@ screening dataset.}
 indicating the quantile used to select the organoids. Default: \code{1/3}.}
 }
 \value{
-a TODO
+an object of class "\code{DrugAUCQuantile}" which contains the
+sensitive and resistant organoids for a specific drug. This object is a
+\code{list} with the following 3 components:
+\itemize{
+\item{quantile}{the \code{upper} and \code{lower} quantiles for the
+specified drug.}
+\item{dataset}{a \code{data.frame} containing the data used to
+calculate the quantiles. }
+\item{extreme}{a \code{data.frame} containing the sensitive and
+resistant organoids according to the specified quantiles.
+The \code{data.frame} also contains the relative AUC. }
+}
 }
 \description{
 The function selects the organoids within the low and upper
