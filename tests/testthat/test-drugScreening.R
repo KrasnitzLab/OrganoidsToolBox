@@ -243,9 +243,13 @@ test_that("selectOrgForOneDrug() must return expected results 01", {
     expected[["lower"]] <- 52.803599419999998
 
     expected[["extreme"]] <- data.frame(organoid_id=c("hT3312", "hT1001",
-        "hT1082", "hT2212"), relative_auc=c(46.61113619000000340975,
-        52.61044455999999769347, 68.93725639000000171563, 75.67627993000000685697),
-        GROUP=c("SENSITIVE", "SENSITIVE", "RESISTANT", "RESISTANT"),
+            "hT2211", "hT1919", "hT1051", "hT1082", "hT2212"),
+        relative_auc=c(46.61113619000000340975, 52.61044455999999769347,
+                       53.57621885999999733485, 56.53001800999999915120,
+                       60.28033159000000296146,
+                       68.93725639000000171563, 75.67627993000000685697),
+        group=c("SENSITIVE", "SENSITIVE", rep("AVERAGE", 3),
+                    "RESISTANT", "RESISTANT"),
         stringsAsFactors=FALSE)
     rownames(expected$extreme) <- NULL
 
@@ -255,7 +259,6 @@ test_that("selectOrgForOneDrug() must return expected results 01", {
     expect_equal(results$extreme, expected$extreme)
 
 })
-
 
 
 test_that("selectOrgForOneDrug() must return expected results 01", {
@@ -278,3 +281,53 @@ test_that("selectOrgForOneDrug() must return expected results 01", {
 
 })
 
+
+#############################################################################
+### Tests plotDrugAUCViolinPlot() results
+#############################################################################
+
+context("plotDrugAUCViolinPlot() results")
+
+test_that("plotDrugAUCViolinPlot() must return error when drugQuantile is character string", {
+
+    error_message <- paste0("The \'drugQuantile\' parameter must be ",
+                                "a DrugAUCQuantile object.")
+
+    expect_error(plotDrugAUCViolinPlot(drugQuantile="test", min=0, max=100,
+        trim=FALSE), error_message, fixed=TRUE)
+})
+
+
+test_that("plotDrugAUCViolinPlot() must return error when min is character string", {
+
+    drug <- readRDS(test_path("fixtures", "drugQuantileTest01.RDS"))
+
+    error_message <- "The \'min\' parameter must be a single numeric."
+
+    expect_error(plotDrugAUCViolinPlot(drugQuantile=drug, min="22", max=100,
+            trim=FALSE), error_message, fixed=TRUE)
+})
+
+
+test_that("plotDrugAUCViolinPlot() must return error when max is character string", {
+
+    drug <- readRDS(test_path("fixtures", "drugQuantileTest01.RDS"))
+
+    error_message <- paste0("The \'max\' parameter must be a single ",
+            "numeric superio to the 'min' parameter.")
+
+    expect_error(plotDrugAUCViolinPlot(drugQuantile=drug, min=22, max="100",
+            trim=FALSE), error_message, fixed=TRUE)
+})
+
+
+test_that("plotDrugAUCViolinPlot() must return error when max is lower than min", {
+
+    drug <- readRDS(test_path("fixtures", "drugQuantileTest01.RDS"))
+
+    error_message <- paste0("The \'max\' parameter must be a single ",
+        "numeric superio to the 'min' parameter.")
+
+    expect_error(plotDrugAUCViolinPlot(drugQuantile=drug, min=122, max=21,
+        trim=FALSE), error_message, fixed=TRUE)
+})

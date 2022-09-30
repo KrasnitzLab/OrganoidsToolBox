@@ -34,12 +34,19 @@
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' ## Load drug screen dataset for 1 drug
+#' data(simpleDrugScreening)
 #'
-#' ## TODO
+#' ## Calculate the extreme organoids for the methotrexate drug screening
+#' ## using a quantile of 1/4
+#' results <- OrganoidsToolBox:::findOneDrugQuantile(
+#'     drugData=simpleDrugScreening,
+#'     drugName="Methotrexate", doseType="Averaged", quantile=1/4)
 #'
-#' @author Pascal Belleau and Astrid Deschênes
+#' ## The classification of the organoids is in the 'extreme' entry
+#' results$extreme
+#'
+#' @author Pascal Belleau, Astrid Deschênes
 #' @importFrom stats quantile
 #' @encoding UTF-8
 #' @keywords internal
@@ -71,6 +78,7 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
     results[["quantile"]] <- list()
 
     ## Calculate upper and lower quantile
+    results[["quantile"]][["value"]] <- quantile
     results[["quantile"]][["lower"]] <-
                     unname(quantile(orgDR.avr.u$relative_auc, quantile))
     results[["quantile"]][["upper"]] <-
@@ -82,15 +90,21 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
     ## Select sensitive organoids
     extreme <- orgDR.avr.u[which(orgDR.avr.u$relative_auc <=
                                         results[["quantile"]][["lower"]]),]
-    extreme$GROUP <- rep("SENSITIVE", nrow(extreme))
+    extreme$group <- rep("SENSITIVE", nrow(extreme))
 
     ## Select resistant organoids
     extreme2 <- orgDR.avr.u[which(orgDR.avr.u$relative_auc >=
                                         results[["quantile"]][["upper"]]),]
-    extreme2$GROUP <- rep("RESISTANT", nrow(extreme2))
+    extreme2$group <- rep("RESISTANT", nrow(extreme2))
 
-    final <- rbind(extreme, extreme2)
-    final <- final[, c("organoid_id", "relative_auc", "GROUP")]
+
+    ## Select resistant organoids
+    extreme3 <- orgDR.avr.u[which(!orgDR.avr.u$organoid_id %in%
+                            c(extreme$organoid_id, extreme2$organoid_id)),]
+    extreme3$group <- rep("AVERAGE", nrow(extreme3))
+
+    final <- rbind(extreme, extreme2, extreme3)
+    final <- final[, c("organoid_id", "relative_auc", "group")]
     results[["extreme"]] <- final[order(final$relative_auc, decreasing=FALSE),]
     rownames(results[["extreme"]]) <- NULL
 
