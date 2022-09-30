@@ -261,7 +261,6 @@ test_that("selectOrgForOneDrug() must return expected results 01", {
 })
 
 
-
 test_that("selectOrgForOneDrug() must return expected results 01", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
@@ -282,3 +281,53 @@ test_that("selectOrgForOneDrug() must return expected results 01", {
 
 })
 
+
+#############################################################################
+### Tests plotDrugAUCViolinPlot() results
+#############################################################################
+
+context("plotDrugAUCViolinPlot() results")
+
+test_that("plotDrugAUCViolinPlot() must return error when drugQuantile is character string", {
+
+    error_message <- paste0("The \'drugQuantile\' parameter must be ",
+                                "a DrugAUCQuantile object.")
+
+    expect_error(plotDrugAUCViolinPlot(drugQuantile="test", min=0, max=100,
+        trim=FALSE), error_message, fixed=TRUE)
+})
+
+
+test_that("plotDrugAUCViolinPlot() must return error when min is character string", {
+
+    drug <- readRDS(test_path("fixtures", "drugQuantileTest01.RDS"))
+
+    error_message <- "The \'min\' parameter must be a single numeric."
+
+    expect_error(plotDrugAUCViolinPlot(drugQuantile=drug, min="22", max=100,
+            trim=FALSE), error_message, fixed=TRUE)
+})
+
+
+test_that("plotDrugAUCViolinPlot() must return error when max is character string", {
+
+    drug <- readRDS(test_path("fixtures", "drugQuantileTest01.RDS"))
+
+    error_message <- paste0("The \'max\' parameter must be a single ",
+            "numeric superio to the 'min' parameter.")
+
+    expect_error(plotDrugAUCViolinPlot(drugQuantile=drug, min=22, max="100",
+            trim=FALSE), error_message, fixed=TRUE)
+})
+
+
+test_that("plotDrugAUCViolinPlot() must return error when max is lower than min", {
+
+    drug <- readRDS(test_path("fixtures", "drugQuantileTest01.RDS"))
+
+    error_message <- paste0("The \'max\' parameter must be a single ",
+        "numeric superio to the 'min' parameter.")
+
+    expect_error(plotDrugAUCViolinPlot(drugQuantile=drug, min=122, max=21,
+        trim=FALSE), error_message, fixed=TRUE)
+})

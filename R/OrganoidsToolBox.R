@@ -117,8 +117,6 @@ NULL
 NULL
 
 
-
-
 #' Simple demo drug screening for one drug (Methotrexate). The results have
 #' been generated for demonstration purpose. There is two studies present in
 #' the dataset. There is also only two types of screening in the dataset. Some

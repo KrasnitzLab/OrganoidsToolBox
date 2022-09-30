@@ -16,7 +16,8 @@ sensitive and resistant organoids for a specific drug.}
 y-axis. Default: \code{0}.}
 
 \item{max}{a single \code{numeric} representing the maximum value of the
-y-axis. Default: \code{100}.}
+y-axis. The maximum value must be superior to the mimimum value.
+Default: \code{100}.}
 
 \item{trim}{a \code{logical} indicating if the tails of the violins
 are trimmed to the range of the data. Default: \code{FALSE}.}
@@ -30,8 +31,18 @@ The function TODO
 }
 \examples{
 
-## TODO
-drugName <- "Methotrexate"
+## Load drug screen dataset for 1 drug
+data(drugScreening)
+
+## Calculate the extreme organoids for the methotrexate drug screening
+## using a quantile of 1/3
+results <- selectOrgForOneDrug(drugScreening=drugScreening,
+    drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
+    doseType="Averaged", quantile=1/3)
+
+## Plot results
+p <- plotDrugAUCViolinPlot(drugQuantile=results, min=20, max=80, trim=TRUE)
+plot(p)
 
 }
 \author{

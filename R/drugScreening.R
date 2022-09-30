@@ -158,7 +158,8 @@ plotDrugAUCDensityCurve <- function(drugQuantile) {
 #' y-axis. Default: \code{0}.
 #'
 #' @param max a single \code{numeric} representing the maximum value of the
-#' y-axis. Default: \code{100}.
+#' y-axis. The maximum value must be superior to the mimimum value.
+#' Default: \code{100}.
 #'
 #' @param trim a \code{logical} indicating if the tails of the violins
 #' are trimmed to the range of the data. Default: \code{FALSE}.
@@ -168,20 +169,42 @@ plotDrugAUCDensityCurve <- function(drugQuantile) {
 #'
 #' @examples
 #'
-#' ## TODO
-#' drugName <- "Methotrexate"
+#' ## Load drug screen dataset for 1 drug
+#' data(drugScreening)
+#'
+#' ## Calculate the extreme organoids for the methotrexate drug screening
+#' ## using a quantile of 1/3
+#' results <- selectOrgForOneDrug(drugScreening=drugScreening,
+#'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
+#'     doseType="Averaged", quantile=1/3)
+#'
+#' ## Plot results
+#' p <- plotDrugAUCViolinPlot(drugQuantile=results, min=20, max=80, trim=TRUE)
+#' plot(p)
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom ggplot2 ggplot geom_violin ylim ylab theme_minimal aes .data
 #' position_jitter geom_point xlab geom_hline scale_colour_manual theme
 #' element_text
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 plotDrugAUCViolinPlot <- function(drugQuantile, min=0, max=100, trim=FALSE) {
 
     ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
     if (!is.DrugAUCQuantile(drugQuantile)) {
-        stop("\'drugQuantile\' must be a DrugAUCQuantile object.")
+        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile object.")
+    }
+
+    ## Validate that the min is a single numeric
+    if (!isSingleNumber(min)) {
+        stop("The \'min\' parameter must be a single numeric.")
+    }
+
+    ## Validate that the min is a single numeric
+    if (!(isSingleNumber(max) && max > min)) {
+        stop("The \'max\' parameter must be a single numeric superio to",
+                " the 'min' parameter.")
     }
 
     aucResults <- drugQuantile$extreme
@@ -192,14 +215,14 @@ plotDrugAUCViolinPlot <- function(drugQuantile, min=0, max=100, trim=FALSE) {
 
     p <- ggplot(data=aucResults, aes(x=.data$drug, y=.data$relative_auc)) +
         geom_violin(size=1, colour="gray", trim=trim) +
-        geom_point(aes(colour = .data$Group), size=3,
+        geom_point(aes(colour = .data$group), size=3,
                         position = position_jitter(seed = 1, width = 0.15)) +
         scale_colour_manual(name="Group", values=colorsR) +
         geom_hline(yintercept=drugQuantile$quantile$lower, linetype="dashed",
                             color = "blue3", size=0.9) +
         geom_hline(yintercept=drugQuantile$quantile$upper, linetype="dashed",
-                   color = "red2", size=0.9) +
-        ylab("Relative AUC") + ylim(c(0, 100)) + xlab("") +
+                            color = "red2", size=0.9) +
+        ylab("Relative AUC") + ylim(c(min, max)) + xlab("") +
         theme_minimal() +
         theme(axis.title=element_text(size=13, face="bold"),
             axis.text.x=element_text(size=13, face="bold"),
