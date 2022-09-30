@@ -20,7 +20,7 @@ Enabling organoid analyses using drug sreening, RNA-seq, exome-seq
 
 ## Installation ##
 
-To install the latest accessible version of **OrganoidsToolBox**, the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
+To install the latest accessible version of **_OrganoidsToolBox_**, the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
 package is required.
 
      ## Load required package
