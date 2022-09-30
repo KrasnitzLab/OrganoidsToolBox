@@ -44,13 +44,20 @@ The function requires a minimum of 3 values to run the quantile analysis.
 }
 \examples{
 
-## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+## Load drug screen dataset for 1 drug
+data(simpleDrugScreening)
 
-## TODO
+## Calculate the extreme organoids for the methotrexate drug screening
+## using a quantile of 1/4
+results <- OrganoidsToolBox:::findOneDrugQuantile(
+    drugData=simpleDrugScreening,
+    drugName="Methotrexate", doseType="Averaged", quantile=1/4)
+
+## The classification of the organoids is in the 'extreme' entry
+results$extreme
 
 }
 \author{
-Pascal Belleau and Astrid Deschênes
+Pascal Belleau, Astrid Deschênes
 }
 \keyword{internal}

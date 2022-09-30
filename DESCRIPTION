@@ -22,6 +22,7 @@ Depends: R (>= 4.0),
     stats,
     utils
 Imports: S4Vectors,
+    ggplot2,
     methods
 Suggests: testthat,
     knitr,

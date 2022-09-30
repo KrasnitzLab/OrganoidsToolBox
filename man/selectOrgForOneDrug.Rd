@@ -66,13 +66,16 @@ quantile, as specified by user, for a specific drug screening.
 \examples{
 
 ## Load drug screen dataset for 1 drug
-data(simpleDrugScreening)
+data(drugScreening)
 
 ## Calculate the extreme organoids for the methotrexate drug screening
 ## using a quantile of 1/3
-results <- selectOrgForOneDrug(drugScreening=simpleDrugScreening,
+results <- selectOrgForOneDrug(drugScreening=drugScreening,
     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
     doseType="Averaged", quantile=1/3)
+
+## The classification of the organoids is in the 'extreme' entry
+results$extreme
 
 }
 \author{

@@ -49,13 +49,16 @@
 #' @examples
 #'
 #' ## Load drug screen dataset for 1 drug
-#' data(simpleDrugScreening)
+#' data(drugScreening)
 #'
 #' ## Calculate the extreme organoids for the methotrexate drug screening
 #' ## using a quantile of 1/3
-#' results <- selectOrgForOneDrug(drugScreening=simpleDrugScreening,
+#' results <- selectOrgForOneDrug(drugScreening=drugScreening,
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     doseType="Averaged", quantile=1/3)
+#'
+#' ## The classification of the organoids is in the 'extreme' entry
+#' results$extreme
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom S4Vectors isSingleNumber
@@ -103,8 +106,9 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
     selectedDrugData <- selectedDrugData[
         which(tolower(selectedDrugData$screen_type) %in% tolower(screenType)), ]
 
-    results <- findOneDrugQuantile(drugData=selectedDrugData, drugName=drugName,
-                        doseType="Averaged", quantile=quantile)
+    results <- findOneDrugQuantile(drugData=selectedDrugData,
+                        drugName=drugName, doseType="Averaged",
+                        quantile=quantile)
 
     # Return a list marked as an DrugAUCQuantile class
     class(results) <- "DrugAUCQuantile"
@@ -117,7 +121,9 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 #'
 #' @description The function TODO
 #'
-#' @param drugQuantile TODO
+#' @param drugQuantile an object of class "\code{DrugAUCQuantile}" which
+#' contains the
+#' sensitive and resistant organoids for a specific drug.
 #'
 #' @return TODO
 #'
@@ -130,11 +136,75 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-plotDrugAUCDistribution <- function(drugQuantile) {
+plotDrugAUCDensityCurve <- function(drugQuantile) {
 
     ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
     if (!is.DrugAUCQuantile(drugQuantile)) {
         stop("\'drugQuantile\' must be a DrugAUCQuantile object.")
     }
 
+}
+
+
+#' @title TODO
+#'
+#' @description The function TODO
+#'
+#' @param drugQuantile an object of class "\code{DrugAUCQuantile}" which
+#' contains the
+#' sensitive and resistant organoids for a specific drug.
+#'
+#' @param min a single \code{numeric} representing the minimum value of the
+#' y-axis. Default: \code{0}.
+#'
+#' @param max a single \code{numeric} representing the maximum value of the
+#' y-axis. Default: \code{100}.
+#'
+#' @param trim a \code{logical} indicating if the tails of the violins
+#' are trimmed to the range of the data. Default: \code{FALSE}.
+#'
+#' @return a \code{ggplot} object for a violin plot built with the specified
+#' data.
+#'
+#' @examples
+#'
+#' ## TODO
+#' drugName <- "Methotrexate"
+#'
+#' @author Astrid Deschênes, Pascal Belleau
+#' @importFrom ggplot2 ggplot geom_violin ylim ylab theme_minimal aes .data
+#' position_jitter geom_point xlab geom_hline scale_colour_manual theme
+#' element_text
+#' @encoding UTF-8
+#' @export
+plotDrugAUCViolinPlot <- function(drugQuantile, min=0, max=100, trim=FALSE) {
+
+    ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
+    if (!is.DrugAUCQuantile(drugQuantile)) {
+        stop("\'drugQuantile\' must be a DrugAUCQuantile object.")
+    }
+
+    aucResults <- drugQuantile$extreme
+    aucResults$drug <- drugQuantile$dataset$drug_a
+
+    colorsR <- c("RESISTANT"="red2", "AVERAGE"="darkgray",
+                    "SENSITIVE"="blue3")
+
+    p <- ggplot(data=aucResults, aes(x=.data$drug, y=.data$relative_auc)) +
+        geom_violin(size=1, colour="gray", trim=trim) +
+        geom_point(aes(colour = .data$Group), size=3,
+                        position = position_jitter(seed = 1, width = 0.15)) +
+        scale_colour_manual(name="Group", values=colorsR) +
+        geom_hline(yintercept=drugQuantile$quantile$lower, linetype="dashed",
+                            color = "blue3", size=0.9) +
+        geom_hline(yintercept=drugQuantile$quantile$upper, linetype="dashed",
+                   color = "red2", size=0.9) +
+        ylab("Relative AUC") + ylim(c(0, 100)) + xlab("") +
+        theme_minimal() +
+        theme(axis.title=element_text(size=13, face="bold"),
+            axis.text.x=element_text(size=13, face="bold"),
+            legend.text=element_text(size=12),
+            legend.title = element_text(size=13, face="bold"))
+
+    return(p)
 }
