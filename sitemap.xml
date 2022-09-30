@@ -22,6 +22,9 @@
     <loc>/reference/OrganoidsToolBox-package.html</loc>
   </url>
   <url>
+    <loc>/reference/drugScreening.html</loc>
+  </url>
+  <url>
     <loc>/reference/findOneDrugQuantile.html</loc>
   </url>
   <url>
@@ -31,7 +34,10 @@
     <loc>/reference/is.DrugAUCQuantile.html</loc>
   </url>
   <url>
-    <loc>/reference/plotDrugAUCDistribution.html</loc>
+    <loc>/reference/plotDrugAUCDensityCurve.html</loc>
+  </url>
+  <url>
+    <loc>/reference/plotDrugAUCViolinPlot.html</loc>
   </url>
   <url>
     <loc>/reference/selectOrgForOneDrug.html</loc>
