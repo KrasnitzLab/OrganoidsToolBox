@@ -99,16 +99,138 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
     }
 
     ## Select the specified study
-    selectedDrugData <- drugScreening[which(tolower(drugScreening$study) ==
-                                                tolower(study)), ]
+    selectedDrugData <- filterDrugScreenOneDrug(drugData=drugScreening,
+        drugName=drugName, study=study, screenType=screenType,
+        doseType=doseType)
 
-    ## Select the specified screen type
-    selectedDrugData <- selectedDrugData[
-        which(tolower(selectedDrugData$screen_type) %in% tolower(screenType)), ]
+    results <- findQuantileOneDrug(cleanDrugData=selectedDrugData,
+                                    quantile=quantile)
 
-    results <- findOneDrugQuantile(drugData=selectedDrugData,
-                        drugName=drugName, doseType="Averaged",
-                        quantile=quantile)
+    # Return a list marked as an DrugAUCQuantile class
+    class(results) <- "DrugAUCQuantile"
+
+    return(results)
+}
+
+#' @title Select the organoids with sensitive and resistant behavior for a
+#' specific drug screening
+#'
+#' @description The function selects the organoids within the low and upper
+#' quantile, as specified by user, for a specific drug screening.
+#'
+#' @param drugScreening a \code{data.frame} that contains the drug screening
+#' results. The mandatory columns: 'organoid_id',
+#' 'timestamp', 'study', 'screen_type', 'dosage_type',
+#' 'drug_a', 'drug_b', 'drug_c', 'drug_background' and 'relative_auc'.
+#'
+#' @param drugName a single \code{character} string representing the name of
+#' the drug selected for the analyses. The drug must be present in the drug
+#' screening dataset. The drug name can be found in the 'drug_a' column of the
+#' drug screening dataset.
+#'
+#' @param study a single \code{character} string representing the name of
+#' the study selected for the analyses. The study must be present in the drug
+#' screening dataset. The study can be found in the 'study' column of the
+#' drug screening dataset.
+#'
+#' @param screenType a \code{vector} of \code{character} string representing
+#' the type of
+#' screening selected for the analyses. The type must be present in the drug
+#' screening dataset. The screen type can be found in the 'screen_type'
+#' column of the
+#' drug screening dataset.
+#'
+#' @param patientInfo a \code{data.frame} containing the meta-data information
+#' related to the organoids. The mandatory columns are: 'organoid_id'
+#' and 'patient_id'.
+#'
+#' @param doseType a single \code{character} string representing the type of
+#' dosage selected for the analyses. The type must be present in the drug
+#' screening dataset.
+#'
+#' @param quantile a single positive \code{numeric} between 0 and 0.5
+#' indicating the quantile used to select the organoids. Default: \code{1/3}.
+#'
+#' @return an object of class "\code{DrugAUCQuantile}" which contains the
+#' sensitive and resistant organoids for a specific drug. This object is a
+#' \code{list} with the following 3 components:
+#' \itemize{
+#' \item{quantile}{the \code{upper} and \code{lower} quantiles for the
+#' specified drug.}
+#' \item{dataset}{a \code{data.frame} containing the data used to
+#' calculate the quantiles. }
+#' \item{extreme}{a \code{data.frame} containing the sensitive and
+#' resistant organoids according to the specified quantiles.
+#' The \code{data.frame} also contains the relative AUC. }
+#' }
+#'
+#' @examples
+#'
+#' ## Load drug screen dataset for 1 drug
+#' data(drugScreening)
+#'
+#' ## Load patient information dataset for 1 drug
+#' data(patientInfo)
+#'
+#' ## Calculate the extreme organoids for the methotrexate drug screening
+#' ## using a quantile of 1/3
+#' results <- selectOrgWithoutReplicateForOneDrug(drugScreening=drugScreening,
+#'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
+#'     patientInfo=patientInfo, doseType="Averaged", quantile=1/3)
+#'
+#' ## The classification of the organoids is in the 'extreme' entry
+#' results$extreme
+#'
+#' @author Astrid Deschênes, Pascal Belleau
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @export
+selectOrgWithoutReplicateForOneDrug <- function(drugScreening, drugName, study,
+    screenType, patientInfo, doseType="Averaged", quantile=1/3) {
+
+    ## Validate input types
+    validateSelectOrgWithoutReplicateForOneDrug(drugScreening=drugScreening,
+        drugName=drugName, study=study, screenType=screenType,
+        patientInfo=patientInfo, doseType=doseType, quantile=quantile)
+
+    ## The drug must be present in the drug dataset
+    if (!(tolower(drugName) %in% tolower(unique(drugScreening$drug_a)))) {
+        stop("The drug \'", drugName, "\' is not present in the drug ",
+                "screening dataset.")
+    }
+
+    ## The study must be present in the drug dataset
+    if (!(tolower(study) %in% tolower(unique(drugScreening$study)))) {
+        stop("The study \'", study, "\' is not present in the drug ",
+                "screening dataset.")
+    }
+
+    ## The study must be present in the drug dataset
+    if (!any(tolower(screenType) %in%
+             tolower(unique(drugScreening$screen_type)))) {
+        stop("The screen type \'", screenType, "\' is not present in the ",
+                "drug screening dataset.")
+    }
+
+    ## The doseType must be present in the drug dataset
+    if (!(tolower(doseType) %in%
+          tolower(unique(drugScreening$dosage_type)))) {
+        stop("The dossage type \'", doseType, "\' is not present in the ",
+                "drug screening dataset.")
+    }
+
+    selectedDrugData <- filterDrugScreenOneDrug(drugData=drugScreening,
+        drugName=drugName, study=study, screenType=screenType,
+        doseType=doseType)
+
+    ## All organoids should have an associated patient information
+    if (!all(unique(selectedDrugData$organoid_id) %in%
+                patientInfo$organoid_id)) {
+        stop("Not all organoids have an associated patient information.")
+    }
+
+    results <- findQuantileOneDrug(cleanDrugData=selectedDrugData,
+                                    quantile=quantile)
 
     # Return a list marked as an DrugAUCQuantile class
     class(results) <- "DrugAUCQuantile"
@@ -125,7 +247,10 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 #' contains the
 #' sensitive and resistant organoids for a specific drug.
 #'
-#' @return TODO
+#' @param byGroup a \code{logical} indicating if the density is split
+#' by group. Default: \code{FALSE}.
+#'
+#' @return a \code{ggplot} object. TODO
 #'
 #' @examples
 #'
@@ -133,16 +258,68 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 #' drugName <- "Methotrexate"
 #'
 #' @author Astrid Deschênes, Pascal Belleau
-#' @importFrom S4Vectors isSingleNumber
+#' @importFrom ggplot2 geom_density scale_fill_manual geom_density
+#' theme_minimal theme xlab ylab geom_rug element_line
 #' @encoding UTF-8
 #' @export
-plotDrugAUCDensityCurve <- function(drugQuantile) {
+plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
 
     ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
     if (!is.DrugAUCQuantile(drugQuantile)) {
-        stop("\'drugQuantile\' must be a DrugAUCQuantile object.")
+        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile object.")
     }
 
+    ## Validate that the byGroup is logical
+    if (!(is.logical(byGroup))) {
+        stop("The \'byGroup\' parameter must be a logical (TRUE or FALSE).")
+    }
+
+
+    aucResults <- drugQuantile$extreme
+    aucResults$drug <- drugQuantile$dataset$drug_a
+
+    colorsR <- c("RESISTANT"="red2", "AVERAGE"="darkgray",
+                 "SENSITIVE"="blue3")
+    colorsR2 <- c("RESISTANT"="pink", "AVERAGE"="lightgray",
+                 "SENSITIVE"="lightblue")
+
+    color <- "darkgray"
+
+    if (byGroup) {
+        p <- ggplot(aucResults, aes(x=.data$relative_auc, fill=.data$group,
+                                        colour=.data$group)) +
+            geom_density(alpha=0.7) +
+            geom_rug(aes(x=.data$relative_auc, y=0, color=.data$group),
+                    size=1.1, alpha=0.5, position=position_jitter(height=0)) +
+            scale_colour_manual(name="Group", values=colorsR) +
+            scale_fill_manual(name="Group", values=colorsR2) +
+            xlab("Relative AUC") + ylab("Density") +
+            theme_minimal() +
+            theme(axis.title=element_text(size=13, face="bold"),
+                  axis.text=element_text(size=12, face="bold"),
+                  legend.text=element_text(size=12),
+                  axis.line=element_line(color="black"),
+                  axis.ticks=element_line(color="black"),
+                  legend.title=element_text(size=13, face="bold"))
+
+    } else {
+        p <- ggplot(aucResults, aes(x=.data$relative_auc)) +
+            geom_density(fill=color, color=color, alpha=0.7) +
+            geom_rug(aes(x=.data$relative_auc, y=0, color=.data$group),
+                size=1.1, alpha=0.7,
+                position=position_jitter(height=0)) +
+            scale_colour_manual(name="Group", values=colorsR) +
+            xlab("Relative AUC") + ylab("Density") +
+            theme_minimal() +
+            theme(axis.title=element_text(size=13, face="bold"),
+              axis.text=element_text(size=12, face="bold"),
+              legend.text=element_text(size=12),
+              axis.line=element_line(color="black"),
+              axis.ticks=element_line(color="black"),
+              legend.title=element_text(size=13, face="bold"))
+    }
+
+    return(p)
 }
 
 
@@ -207,6 +384,11 @@ plotDrugAUCViolinPlot <- function(drugQuantile, min=0, max=100, trim=FALSE) {
                 " the 'min' parameter.")
     }
 
+    ## Validate that the trim is logical
+    if (!(is.logical(trim))) {
+        stop("The \'trim\' parameter must be a logical (TRUE or FALSE).")
+    }
+
     aucResults <- drugQuantile$extreme
     aucResults$drug <- drugQuantile$dataset$drug_a
 
@@ -227,7 +409,7 @@ plotDrugAUCViolinPlot <- function(drugQuantile, min=0, max=100, trim=FALSE) {
         theme(axis.title=element_text(size=13, face="bold"),
             axis.text.x=element_text(size=13, face="bold"),
             legend.text=element_text(size=12),
-            legend.title = element_text(size=13, face="bold"))
+            legend.title=element_text(size=13, face="bold"))
 
     return(p)
 }

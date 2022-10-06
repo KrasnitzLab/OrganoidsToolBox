@@ -5,15 +5,18 @@
 \alias{plotDrugAUCDensityCurve}
 \title{TODO}
 \usage{
-plotDrugAUCDensityCurve(drugQuantile)
+plotDrugAUCDensityCurve(drugQuantile, byGroup = FALSE)
 }
 \arguments{
 \item{drugQuantile}{an object of class "\code{DrugAUCQuantile}" which
 contains the
 sensitive and resistant organoids for a specific drug.}
+
+\item{byGroup}{a \code{logical} indicating if the density is split
+by group. Default: \code{FALSE}.}
 }
 \value{
-TODO
+a \code{ggplot} object. TODO
 }
 \description{
 The function TODO

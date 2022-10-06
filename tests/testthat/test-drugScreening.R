@@ -331,3 +331,41 @@ test_that("plotDrugAUCViolinPlot() must return error when max is lower than min"
     expect_error(plotDrugAUCViolinPlot(drugQuantile=drug, min=122, max=21,
         trim=FALSE), error_message, fixed=TRUE)
 })
+
+
+test_that("plotDrugAUCViolinPlot() must return error when trim is a numeric", {
+
+    drug <- readRDS(test_path("fixtures", "drugQuantileTest01.RDS"))
+
+    error_message <- "The \'trim\' parameter must be a logical (TRUE or FALSE)."
+
+    expect_error(plotDrugAUCViolinPlot(drugQuantile=drug, min=1, max=21,
+        trim=22), error_message, fixed=TRUE)
+})
+
+
+############################################################################
+### Tests plotDrugAUCDensityCurve() results
+#############################################################################
+
+context("plotDrugAUCViolinPlot() results")
+
+test_that("plotDrugAUCDensityCurve() must return error when drugQuantile is character string", {
+
+    error_message <- paste0("The \'drugQuantile\' parameter must be ",
+                                "a DrugAUCQuantile object.")
+
+    expect_error(plotDrugAUCDensityCurve(drugQuantile="33", byGroup=FALSE),
+                        error_message, fixed=TRUE)
+})
+
+
+test_that("plotDrugAUCViolinPlot() must return error when byGroup is character string", {
+
+    drug <- readRDS(test_path("fixtures", "drugQuantileTest01.RDS"))
+
+    error_message <- "The \'byGroup\' parameter must be a logical (TRUE or FALSE)."
+
+    expect_error(plotDrugAUCDensityCurve(drugQuantile=drug, byGroup="3"),
+                 error_message, fixed=TRUE)
+})
