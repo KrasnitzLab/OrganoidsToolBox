@@ -235,10 +235,10 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
 
     ## Select the specified drug
     orgDR.avr <- orgDR.avr[which(tolower(orgDR.avr$drug_a) ==
-                                     tolower(drugName) &
-                                     orgDR.avr$drug_b == "N/A" &
-                                     orgDR.avr$drug_c == "N/A" &
-                                     orgDR.avr$drug_background == "N/A"), ]
+                                    tolower(drugName) &
+                                    orgDR.avr$drug_b == "N/A" &
+                                    orgDR.avr$drug_c == "N/A" &
+                                    orgDR.avr$drug_background == "N/A"), ]
 
     ## Remove duplicate
     orgDR.avr.u <- orgDR.avr[-1 * which(duplicated(orgDR.avr[,
@@ -247,7 +247,7 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
     ## Check that the number of rows is sufficient
     if (nrow(orgDR.avr.u) < 3) {
         stop("There is not enough data (less than 3 organoids) with ",
-             "the current critera to run quantile analysis.")
+                "the current critera to run quantile analysis.")
     }
 
     results <- list()
@@ -265,12 +265,12 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
 
     ## Select sensitive organoids
     extreme <- orgDR.avr.u[which(orgDR.avr.u$relative_auc <=
-                                     results[["quantile"]][["lower"]]),]
+                                    results[["quantile"]][["lower"]]),]
     extreme$group <- rep("SENSITIVE", nrow(extreme))
 
     ## Select resistant organoids
     extreme2 <- orgDR.avr.u[which(orgDR.avr.u$relative_auc >=
-                                      results[["quantile"]][["upper"]]),]
+                                    results[["quantile"]][["upper"]]),]
     extreme2$group <- rep("RESISTANT", nrow(extreme2))
 
 
@@ -340,13 +340,13 @@ validateSelectOrgForOneDrug <- function(drugScreening, drugName, study,
 
     ## Check for mandatory columns in drugScreening
     if (!all(c('organoid_id', 'timestamp', 'study', 'screen_type',
-               'dosage_type', 'drug_a', 'drug_b', 'drug_c', 'drug_background',
-               'relative_auc') %in% colnames(drugScreening))) {
+            'dosage_type', 'drug_a', 'drug_b', 'drug_c', 'drug_background',
+            'relative_auc') %in% colnames(drugScreening))) {
         stop("Mandatory columns are missing from the drug screening ",
-             "dataset. The mandatory columns are: \'organoid_id\', ",
-             "\'timestamp\', \'study\', \'screen_type\', \'dosage_type\', ",
-             "\'drug_a\', \'drug_b\', \'drug_c\', \'drug_background\' and ",
-             "\'relative_auc\'.")
+                "dataset. The mandatory columns are: \'organoid_id\', ",
+                "\'timestamp\', \'study\', \'screen_type\', \'dosage_type\', ",
+                "\'drug_a\', \'drug_b\', \'drug_c\', \'drug_background\' and ",
+                "\'relative_auc\'.")
     }
 
     ## The drugName parameter must be a single character string
