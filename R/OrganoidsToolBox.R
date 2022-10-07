@@ -208,3 +208,56 @@ NULL
 #'
 #'
 NULL
+
+
+#' Simple demo patient information dataset. The information is related to the
+#' organoids present in the 'drugScreening' dataset.
+#'
+#' @name patientInfo
+#'
+#' @docType data
+#'
+#' @aliases patientInfo
+#'
+#' @format a \code{data.frame} with the following columns:
+#' \itemize{
+#' \item \code{organoid_id} { a \code{character} string representing the
+#' organoid identifier. }
+#' \item \code{patient_id} { a \code{character} string representing the patient
+#' identifier. }
+#' }
+#'
+#' @seealso
+#' \itemize{
+#' \item \code{\link{selectOrgForOneDrug}} { for selecting the organoids
+#' with sensitive and resistant behavior for a
+#' specific drug screening.}
+#' \item \code{\link{selectOrgWithoutReplicateForOneDrug}} { for selecting
+#' the unrelated organoids (only one organoid per patient)
+#' with sensitive and resistant behavior for a
+#' specific drug screening.}
+#' }
+#'
+#' @usage data(drugScreening)
+#'
+#' @keywords datasets
+#'
+#' @examples
+#'
+#' ## Load drug screen dataset for 1 drug
+#' data(drugScreening)
+#'
+#' ## Load patient information dataset for 1 drug
+#' data(patientInfo)
+#'
+#' ## Calculate the extreme organoids for the methotrexate drug screening
+#' ## using a quantile of 1/3
+#' results <- selectOrgWithoutReplicateForOneDrug(drugScreening=drugScreening,
+#'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
+#'     patientInfo=patientInfo, doseType="Averaged", quantile=1/4)
+#'
+#' ## The information of the extreme organoids is found it the 'extreme' entry
+#' results$extreme
+#'
+#'
+NULL
