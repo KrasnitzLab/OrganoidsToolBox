@@ -369,3 +369,50 @@ test_that("plotDrugAUCViolinPlot() must return error when byGroup is character s
     expect_error(plotDrugAUCDensityCurve(drugQuantile=drug, byGroup="3"),
                  error_message, fixed=TRUE)
 })
+
+
+
+
+#############################################################################
+### Tests selectOrgWithoutReplicateForOneDrug() results
+#############################################################################
+
+context("selectOrgWithoutReplicateForOneDrug() results")
+
+test_that("selectOrgWithoutReplicateForOneDrug() must return error when drugname not in drug dataset", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
+        "2", "3"), stringsAsFactors=FALSE)
+
+    drugName <- "TOTO"
+
+    error_message <- paste0("The drug \'", drugName, "\' is not present ",
+                            "in the drug screening dataset.")
+
+    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
+        drugName=drugName, study="MEGA-TEST", patientInfo=patientData,
+        screenType="TEST-01", doseType="Averaged", quantile=1/3),
+        error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgWithoutReplicateForOneDrug() must return error when drug screening is a numeric", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
+            "2", "3"), stringsAsFactors=FALSE)
+
+    study <- "MEGA"
+
+    error_message <- paste0("The study \'", study, "\' is not present ",
+                        "in the drug screening dataset.")
+
+    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
+        drugName="Methotrexate", study=study, patientInfo=patientData,
+        screenType="TEST-01", doseType="Averaged", quantile=1/3),
+        error_message, fixed=TRUE)
+})
+
