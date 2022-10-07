@@ -25,13 +25,22 @@
     <loc>/reference/drugScreening.html</loc>
   </url>
   <url>
+    <loc>/reference/filterDrugScreenOneDrug.html</loc>
+  </url>
+  <url>
     <loc>/reference/findOneDrugQuantile.html</loc>
+  </url>
+  <url>
+    <loc>/reference/findQuantileOneDrug.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
     <loc>/reference/is.DrugAUCQuantile.html</loc>
+  </url>
+  <url>
+    <loc>/reference/patientInfo.html</loc>
   </url>
   <url>
     <loc>/reference/plotDrugAUCDensityCurve.html</loc>
@@ -43,9 +52,15 @@
     <loc>/reference/selectOrgForOneDrug.html</loc>
   </url>
   <url>
+    <loc>/reference/selectOrgWithoutReplicateForOneDrug.html</loc>
+  </url>
+  <url>
     <loc>/reference/simpleDrugScreening.html</loc>
   </url>
   <url>
     <loc>/reference/validateSelectOrgForOneDrug.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateSelectOrgWithoutReplicateForOneDrug.html</loc>
   </url>
 </urlset>
