@@ -398,7 +398,7 @@ test_that("selectOrgWithoutReplicateForOneDrug() must return error when drugname
 })
 
 
-test_that("selectOrgWithoutReplicateForOneDrug() must return error when drug screening is a numeric", {
+test_that("selectOrgWithoutReplicateForOneDrug() must return error when study not in drug dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
 
@@ -413,6 +413,44 @@ test_that("selectOrgWithoutReplicateForOneDrug() must return error when drug scr
     expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
         drugName="Methotrexate", study=study, patientInfo=patientData,
         screenType="TEST-01", doseType="Averaged", quantile=1/3),
+        error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgWithoutReplicateForOneDrug() must return error when screening type not in drug dataset", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
+                        "2", "3"), stringsAsFactors=FALSE)
+
+    screenType <- "CANADA"
+
+    error_message <- paste0("The screen type \'", screenType, "\' is ",
+                        "not present in the drug screening dataset.")
+
+    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
+        drugName="Methotrexate", study="MEGA-TEST", patientInfo=patientData,
+        screenType=screenType, doseType="Averaged", quantile=1/3),
+                 error_message, fixed=TRUE)
+})
+
+
+test_that("selectOrgWithoutReplicateForOneDrug() must return error when dosage type not in drug dataset", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
+                        "2", "3"), stringsAsFactors=FALSE)
+
+    dosage <- "CANADA"
+
+    error_message <- paste0("The dosage type \'", dosage, "\' is not ",
+                            "present in the drug screening dataset.")
+
+    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
+        drugName="Methotrexate", study="MEGA-TEST", patientInfo=patientData,
+        screenType="TEST-01", doseType=dosage, quantile=1/3),
         error_message, fixed=TRUE)
 })
 
