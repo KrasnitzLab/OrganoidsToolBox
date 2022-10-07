@@ -3,26 +3,32 @@
 \encoding{UTF-8}
 \name{plotDrugAUCDensityCurve}
 \alias{plotDrugAUCDensityCurve}
-\title{Create a density plot using the relative AUC and the sensitivy
-classes (SENSITIVE, AVERAGE, RESISTANT) of the organoids}
+\title{Create a density plot using the relative AUC and the sensitivity
+classes (SENSITIVE, AVERAGE, RESISTANT) of the organoids for a specific
+drug.}
 \usage{
 plotDrugAUCDensityCurve(drugQuantile, byGroup = FALSE)
 }
 \arguments{
-\item{drugQuantile}{an object of class "\code{DrugAUCQuantile}" which
-contains the
-sensitive and resistant organoids for a specific drug.}
+\item{drugQuantile}{an object of class "\code{DrugAUCQuantile}" or
+"\code{DrugAUCQuantileNoReplicate}" which
+contains the sensitive and resistant information for organoids associated
+to a specific drug screening.}
 
 \item{byGroup}{a \code{logical} indicating if the density is split
 by group. Default: \code{FALSE}.}
 }
 \value{
 a \code{ggplot} object that represents a density plot of the
-AUC according to the drug senstivity classification(SENSITIVE, AVERAGE,
+AUC according to the drug sensitivity classification(SENSITIVE, AVERAGE,
 RESISTANT).
 }
 \description{
-The function TODO
+The function generates a density plot using the relative AUC
+and the sensitivity class information present in a \code{DrugAUCQuantile}"
+object. The function uses [ggplot2::ggplot][ggplot2::ggplot()] function and
+returns a "\code{ggplot}" object. The density plot can be split by
+sensitivity classes.
 }
 \examples{
 

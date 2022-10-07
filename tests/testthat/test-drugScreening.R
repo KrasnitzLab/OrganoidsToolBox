@@ -352,8 +352,8 @@ context("plotDrugAUCViolinPlot() results")
 
 test_that("plotDrugAUCDensityCurve() must return error when drugQuantile is character string", {
 
-    error_message <- paste0("The \'drugQuantile\' parameter must be ",
-                                "a DrugAUCQuantile object.")
+    error_message <- paste0("The \'drugQuantile\' parameter must be a ",
+        "DrugAUCQuantile or DrugAUCQuantileNoReplicate object.")
 
     expect_error(plotDrugAUCDensityCurve(drugQuantile="33", byGroup=FALSE),
                         error_message, fixed=TRUE)
@@ -454,3 +454,18 @@ test_that("selectOrgWithoutReplicateForOneDrug() must return error when dosage t
         error_message, fixed=TRUE)
 })
 
+
+test_that("selectOrgWithoutReplicateForOneDrug() must return error when dosage type not in drug dataset", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
+        "2", "3"), stringsAsFactors=FALSE)
+
+    error_message <- "Not all organoids have an associated patient information."
+
+    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
+        drugName="Methotrexate", study="MEGA-TEST", patientInfo=patientData,
+        screenType="TEST-01", doseType="Averaged", quantile=1/3),
+        error_message, fixed=TRUE)
+})

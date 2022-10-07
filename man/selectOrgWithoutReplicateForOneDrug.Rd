@@ -66,7 +66,10 @@ The \code{data.frame} also contains the relative AUC. }
 }
 \description{
 The function selects the organoids within the low and upper
-quantile, as specified by user, for a specific drug screening.
+quantile, as specified by user, for a specific drug screening. When more
+than one organoid is present for a patient, only one is retained for the
+analysis. The selection is done randomly. To obtain reproducible results,
+the seed should be set before running this function.
 }
 \examples{
 
