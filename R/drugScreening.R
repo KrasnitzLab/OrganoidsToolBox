@@ -116,7 +116,10 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 #' specific drug screening
 #'
 #' @description The function selects the organoids within the low and upper
-#' quantile, as specified by user, for a specific drug screening.
+#' quantile, as specified by user, for a specific drug screening. When more
+#' than one organoid is present for a patient, only one is retained for the
+#' analysis. The selection is done randomly. To obtain reproducible results,
+#' the seed should be set before running this function.
 #'
 #' @param drugScreening a \code{data.frame} that contains the drug screening
 #' results. The mandatory columns: 'organoid_id',
@@ -215,7 +218,7 @@ selectOrgWithoutReplicateForOneDrug <- function(drugScreening, drugName, study,
     ## The doseType must be present in the drug dataset
     if (!(tolower(doseType) %in%
           tolower(unique(drugScreening$dosage_type)))) {
-        stop("The dossage type \'", doseType, "\' is not present in the ",
+        stop("The dosage type \'", doseType, "\' is not present in the ",
                 "drug screening dataset.")
     }
 
@@ -229,44 +232,75 @@ selectOrgWithoutReplicateForOneDrug <- function(drugScreening, drugName, study,
         stop("Not all organoids have an associated patient information.")
     }
 
-    results <- findQuantileOneDrug(cleanDrugData=selectedDrugData,
-                                    quantile=quantile)
+    merged_data <- merge(selectedDrugData, patientInfo, by="organoid_id",
+                                all=FALSE)
 
-    # Return a list marked as an DrugAUCQuantile class
-    class(results) <- "DrugAUCQuantile"
+    shuffled_data <- merged_data[sample(1:nrow(merged_data),
+                                             replace=FALSE), ]
+
+    newData <-  shuffled_data[!duplicated(shuffled_data$patient_id), ]
+
+    results <- findQuantileOneDrug(cleanDrugData=newData, quantile=quantile)
+
+    results[["datasetWithReplicates"]] <- shuffled_data
+
+    # Return a list marked as an DrugAUCQuantileNoReplicate class
+    class(results) <- "DrugAUCQuantileNoReplicate"
 
     return(results)
 }
 
 
-#' @title TODO
+#' @title Create a density plot using the relative AUC and the sensitivity
+#' classes (SENSITIVE, AVERAGE, RESISTANT) of the organoids for a specific
+#' drug.
 #'
-#' @description The function TODO
+#' @description The function generates a density plot using the relative AUC
+#' and the sensitivity class information present in a \code{DrugAUCQuantile}"
+#' object. The function uses [ggplot2::ggplot][ggplot2::ggplot()] function and
+#' returns a "\code{ggplot}" object. The density plot can be split by
+#' sensitivity classes.
 #'
-#' @param drugQuantile an object of class "\code{DrugAUCQuantile}" which
-#' contains the
-#' sensitive and resistant organoids for a specific drug.
+#' @param drugQuantile an object of class "\code{DrugAUCQuantile}" or
+#' "\code{DrugAUCQuantileNoReplicate}" which
+#' contains the sensitive and resistant information for organoids associated
+#' to a specific drug screening.
 #'
 #' @param byGroup a \code{logical} indicating if the density is split
 #' by group. Default: \code{FALSE}.
 #'
-#' @return a \code{ggplot} object. TODO
+#' @return a \code{ggplot} object that represents a density plot of the
+#' AUC according to the drug sensitivity classification(SENSITIVE, AVERAGE,
+#' RESISTANT).
 #'
 #' @examples
 #'
-#' ## TODO
-#' drugName <- "Methotrexate"
+#' ## Load drug screen dataset for 1 drug
+#' data(drugScreening)
+#'
+#' ## Calculate the extreme organoids for the methotrexate drug screening
+#' ## using a quantile of 1/3
+#' results <- selectOrgForOneDrug(drugScreening=drugScreening,
+#'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
+#'     doseType="Averaged", quantile=1/3)
+#'
+#' ## Create a density plot where drug sensitivy groups are split
+#' densityGraph <- plotDrugAUCDensityCurve(results, byGroup=TRUE)
+#' densityGraph
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom ggplot2 geom_density scale_fill_manual geom_density
 #' theme_minimal theme xlab ylab geom_rug element_line
+#' @importFrom ggridges geom_density_ridges position_points_jitter
 #' @encoding UTF-8
 #' @export
 plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
 
     ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
-    if (!is.DrugAUCQuantile(drugQuantile)) {
-        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile object.")
+    if (!(is.DrugAUCQuantile(drugQuantile) ||
+            is.DrugAUCQuantileNoReplicate(drugQuantile))) {
+        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile or ",
+                "DrugAUCQuantileNoReplicate object.")
     }
 
     ## Validate that the byGroup is logical
@@ -274,23 +308,24 @@ plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
         stop("The \'byGroup\' parameter must be a logical (TRUE or FALSE).")
     }
 
-
     aucResults <- drugQuantile$extreme
     aucResults$drug <- drugQuantile$dataset$drug_a
+    aucResults$group <- factor(aucResults$group, levels=c("SENSITIVE",
+                                        "AVERAGE", "RESISTANT"))
 
     colorsR <- c("RESISTANT"="red2", "AVERAGE"="darkgray",
-                 "SENSITIVE"="blue3")
+                    "SENSITIVE"="blue3")
     colorsR2 <- c("RESISTANT"="pink", "AVERAGE"="lightgray",
-                 "SENSITIVE"="lightblue")
+                    "SENSITIVE"="lightblue")
 
     color <- "darkgray"
 
     if (byGroup) {
         p <- ggplot(aucResults, aes(x=.data$relative_auc, fill=.data$group,
-                                        colour=.data$group)) +
-            geom_density(alpha=0.7) +
-            geom_rug(aes(x=.data$relative_auc, y=0, color=.data$group),
-                    size=1.1, alpha=0.5, position=position_jitter(height=0)) +
+                                    y=.data$group, colour=.data$group)) +
+            geom_density_ridges(jittered_points=TRUE,
+                position=position_points_jitter(width=0.05, height=0),
+                point_shape='|', point_size=6, point_alpha=1, alpha=0.7) +
             scale_colour_manual(name="Group", values=colorsR) +
             scale_fill_manual(name="Group", values=colorsR2) +
             xlab("Relative AUC") + ylab("Density") +
