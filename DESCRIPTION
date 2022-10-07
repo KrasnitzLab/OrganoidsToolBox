@@ -23,6 +23,7 @@ Depends: R (>= 4.0),
     utils
 Imports: S4Vectors,
     ggplot2,
+    ggridges,
     methods
 Suggests: testthat,
     knitr,

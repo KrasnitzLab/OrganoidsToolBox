@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{plotDrugAUCDensityCurve}
 \alias{plotDrugAUCDensityCurve}
-\title{TODO}
+\title{Create a density plot using the relative AUC and the sensitivy
+classes (SENSITIVE, AVERAGE, RESISTANT) of the organoids}
 \usage{
 plotDrugAUCDensityCurve(drugQuantile, byGroup = FALSE)
 }
@@ -16,15 +17,27 @@ sensitive and resistant organoids for a specific drug.}
 by group. Default: \code{FALSE}.}
 }
 \value{
-a \code{ggplot} object. TODO
+a \code{ggplot} object that represents a density plot of the
+AUC according to the drug senstivity classification(SENSITIVE, AVERAGE,
+RESISTANT).
 }
 \description{
 The function TODO
 }
 \examples{
 
-## TODO
-drugName <- "Methotrexate"
+## Load drug screen dataset for 1 drug
+data(drugScreening)
+
+## Calculate the extreme organoids for the methotrexate drug screening
+## using a quantile of 1/3
+results <- selectOrgForOneDrug(drugScreening=drugScreening,
+    drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
+    doseType="Averaged", quantile=1/3)
+
+## Create a density plot where drug sensitivy groups are split
+densityGraph <- plotDrugAUCDensityCurve(results, byGroup=TRUE)
+densityGraph
 
 }
 \author{
