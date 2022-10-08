@@ -75,7 +75,7 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
     ## The drug must be present in the drug dataset
     if (!(tolower(drugName) %in% tolower(unique(drugScreening$drug_a)))) {
         stop("The drug \'", drugName, "\' is not present in the drug ",
-             "screening dataset.")
+                "screening dataset.")
     }
 
     ## The study must be present in the drug dataset
@@ -86,14 +86,14 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 
     ## The study must be present in the drug dataset
     if (!any(tolower(screenType) %in%
-          tolower(unique(drugScreening$screen_type)))) {
+            tolower(unique(drugScreening$screen_type)))) {
         stop("The screen type \'", screenType, "\' is not present in the ",
                     "drug screening dataset.")
     }
 
     ## The doseType must be present in the drug dataset
     if (!(tolower(doseType) %in%
-          tolower(unique(drugScreening$dosage_type)))) {
+            tolower(unique(drugScreening$dosage_type)))) {
         stop("The dossage type \'", doseType, "\' is not present in the ",
                 "drug screening dataset.")
     }
@@ -210,14 +210,14 @@ selectOrgWithoutReplicateForOneDrug <- function(drugScreening, drugName, study,
 
     ## The study must be present in the drug dataset
     if (!any(tolower(screenType) %in%
-             tolower(unique(drugScreening$screen_type)))) {
+                tolower(unique(drugScreening$screen_type)))) {
         stop("The screen type \'", screenType, "\' is not present in the ",
                 "drug screening dataset.")
     }
 
     ## The doseType must be present in the drug dataset
     if (!(tolower(doseType) %in%
-          tolower(unique(drugScreening$dosage_type)))) {
+            tolower(unique(drugScreening$dosage_type)))) {
         stop("The dosage type \'", doseType, "\' is not present in the ",
                 "drug screening dataset.")
     }
@@ -236,7 +236,7 @@ selectOrgWithoutReplicateForOneDrug <- function(drugScreening, drugName, study,
                                 all=FALSE)
 
     shuffled_data <- merged_data[sample(1:nrow(merged_data),
-                                             replace=FALSE), ]
+                                                replace=FALSE), ]
 
     newData <-  shuffled_data[!duplicated(shuffled_data$patient_id), ]
 
@@ -331,11 +331,11 @@ plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
             xlab("Relative AUC") + ylab("Density") +
             theme_minimal() +
             theme(axis.title=element_text(size=13, face="bold"),
-                  axis.text=element_text(size=12, face="bold"),
-                  legend.text=element_text(size=12),
-                  axis.line=element_line(color="black"),
-                  axis.ticks=element_line(color="black"),
-                  legend.title=element_text(size=13, face="bold"))
+                    axis.text=element_text(size=12, face="bold"),
+                    legend.text=element_text(size=12),
+                    axis.line=element_line(color="black"),
+                    axis.ticks=element_line(color="black"),
+                    legend.title=element_text(size=13, face="bold"))
 
     } else {
         p <- ggplot(aucResults, aes(x=.data$relative_auc)) +
@@ -347,11 +347,11 @@ plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
             xlab("Relative AUC") + ylab("Density") +
             theme_minimal() +
             theme(axis.title=element_text(size=13, face="bold"),
-              axis.text=element_text(size=12, face="bold"),
-              legend.text=element_text(size=12),
-              axis.line=element_line(color="black"),
-              axis.ticks=element_line(color="black"),
-              legend.title=element_text(size=13, face="bold"))
+                axis.text=element_text(size=12, face="bold"),
+                legend.text=element_text(size=12),
+                axis.line=element_line(color="black"),
+                axis.ticks=element_line(color="black"),
+                legend.title=element_text(size=13, face="bold"))
     }
 
     return(p)
