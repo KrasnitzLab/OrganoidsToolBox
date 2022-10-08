@@ -358,9 +358,15 @@ plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
 }
 
 
-#' @title TODO
+#' @title Create a violin plot using the relative AUC and the sensitivity
+#' classes (SENSITIVE, AVERAGE, RESISTANT) of the organoids for a specific
+#' drug.
 #'
-#' @description The function TODO
+#' @description The function generates a violin plot using the relative AUC
+#' and the sensitivity class information present in a \code{DrugAUCQuantile}"
+#' object. The function uses [ggplot2::ggplot][ggplot2::ggplot()] function and
+#' returns a "\code{ggplot}" object. The violin tails of the violins can be
+#' trimmed to the range of the data.
 #'
 #' @param drugQuantile an object of class "\code{DrugAUCQuantile}" which
 #' contains the
