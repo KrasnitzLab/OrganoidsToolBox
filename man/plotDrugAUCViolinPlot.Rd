@@ -3,7 +3,9 @@
 \encoding{UTF-8}
 \name{plotDrugAUCViolinPlot}
 \alias{plotDrugAUCViolinPlot}
-\title{TODO}
+\title{Create a violin plot using the relative AUC and the sensitivity
+classes (SENSITIVE, AVERAGE, RESISTANT) of the organoids for a specific
+drug.}
 \usage{
 plotDrugAUCViolinPlot(drugQuantile, min = 0, max = 100, trim = FALSE)
 }
@@ -27,7 +29,11 @@ a \code{ggplot} object for a violin plot built with the specified
 data.
 }
 \description{
-The function TODO
+The function generates a violin plot using the relative AUC
+and the sensitivity class information present in a \code{DrugAUCQuantile}"
+object. The function uses [ggplot2::ggplot][ggplot2::ggplot()] function and
+returns a "\code{ggplot}" object. The violin tails of the violins can be
+trimmed to the range of the data.
 }
 \examples{
 
