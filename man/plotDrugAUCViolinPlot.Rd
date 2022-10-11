@@ -18,7 +18,7 @@ sensitive and resistant organoids for a specific drug.}
 y-axis. Default: \code{0}.}
 
 \item{max}{a single \code{numeric} representing the maximum value of the
-y-axis. The maximum value must be superior to the mimimum value.
+y-axis. The maximum value must be superior to the minimum value.
 Default: \code{100}.}
 
 \item{trim}{a \code{logical} indicating if the tails of the violins

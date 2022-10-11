@@ -376,7 +376,7 @@ plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
 #' y-axis. Default: \code{0}.
 #'
 #' @param max a single \code{numeric} representing the maximum value of the
-#' y-axis. The maximum value must be superior to the mimimum value.
+#' y-axis. The maximum value must be superior to the minimum value.
 #' Default: \code{100}.
 #'
 #' @param trim a \code{logical} indicating if the tails of the violins
