@@ -85,7 +85,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
 <p><br><strong>Package</strong>: <em>OrganoidsToolBox</em><br><strong>Authors</strong>: Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [cre, aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Amber Habowski
 [dtc], David A. Tuveson [fnd] (<a href="https://orcid.org/0000-0002-8017-2712" class="external-link uri">https://orcid.org/0000-0002-8017-2712</a>), Alexander
-Krasnitz [fnd, aut]<br><strong>Version</strong>: 0.0.1<br><strong>Compiled date</strong>: 2022-10-08<br><strong>License</strong>: Artistic-2.0<br></p>
+Krasnitz [fnd, aut]<br><strong>Version</strong>: 0.0.1<br><strong>Compiled date</strong>: 2022-10-14<br><strong>License</strong>: Artistic-2.0<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -129,8 +129,70 @@ package is required.</p>
 <div class="section level2">
 <h2 id="main-steps">Main Steps<a class="anchor" aria-label="anchor" href="#main-steps"></a>
 </h2>
-<p>TODO</p>
+<div class="section level3">
+<h3 id="input">Input<a class="anchor" aria-label="anchor" href="#input"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Load drug screen dataset for 1 drug</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">drugScreening</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">drugScreening</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   Column1 organoid_id  plate passage_number timestamp     study screen_type</span></span>
+<span><span class="co">## 1       1      hT1001 Plate1            P16  2/2/1988 MEGA-TEST     TEST-01</span></span>
+<span><span class="co">## 2       2      hT1001 Plate1            P16  2/2/1988 MEGA-TEST     TEST-01</span></span>
+<span><span class="co">## 3       3      hT1001 Plate1            P16  2/2/1988 MEGA-TEST     TEST-01</span></span>
+<span><span class="co">## 4       4      hT1001 Plate1            P16  2/2/1988 MEGA-TEST     TEST-01</span></span>
+<span><span class="co">## 5       5      hT1001 Plate1            P16  2/2/1988 MEGA-TEST     TEST-01</span></span>
+<span><span class="co">## 6       1      hT1001 Plate1            P16  2/2/1988 MEGA-TEST     TEST-01</span></span>
+<span><span class="co">##     z_prime       drug_a drug_b drug_c drug_background dosage_type</span></span>
+<span><span class="co">## 1 0.2732018 Methotrexate    N/A    N/A             N/A    Averaged</span></span>
+<span><span class="co">## 2 0.2732018 Methotrexate    N/A    N/A             N/A    Averaged</span></span>
+<span><span class="co">## 3 0.2732018 Methotrexate    N/A    N/A             N/A    Averaged</span></span>
+<span><span class="co">## 4 0.2732018 Methotrexate    N/A    N/A             N/A    Averaged</span></span>
+<span><span class="co">## 5 0.2732018 Methotrexate    N/A    N/A             N/A    Averaged</span></span>
+<span><span class="co">## 6 0.2732018 Methotrexate    N/A    N/A             N/A    Averaged</span></span>
+<span><span class="co">##   dosage_concentration_a dosage_concentration_b dosage_concentration_c</span></span>
+<span><span class="co">## 1             -2.1481304                      0                      0</span></span>
+<span><span class="co">## 2             -1.8477117                      0                      0</span></span>
+<span><span class="co">## 3             -1.3027707                      0                      0</span></span>
+<span><span class="co">## 4             -0.7495800                      0                      0</span></span>
+<span><span class="co">## 5             -0.1481304                      0                      0</span></span>
+<span><span class="co">## 6              0.3961993                      0                      0</span></span>
+<span><span class="co">##   dosage_concentration_background percent_viability     ic50      auc</span></span>
+<span><span class="co">## 1                               0          81.64214 1.072243 218.0053</span></span>
+<span><span class="co">## 2                               0          89.92993 1.072243 218.0053</span></span>
+<span><span class="co">## 3                               0          75.73226 1.072243 218.0053</span></span>
+<span><span class="co">## 4                               0          57.93407 1.072243 218.0053</span></span>
+<span><span class="co">## 5                               0          71.17445 1.072243 218.0053</span></span>
+<span><span class="co">## 6                               0          43.70780 1.072243 218.0053</span></span>
+<span><span class="co">##   relative_auc</span></span>
+<span><span class="co">## 1     52.61044</span></span>
+<span><span class="co">## 2     52.61044</span></span>
+<span><span class="co">## 3     52.61044</span></span>
+<span><span class="co">## 4     52.61044</span></span>
+<span><span class="co">## 5     52.61044</span></span>
+<span><span class="co">## 6     52.61044</span></span></code></pre>
 <p><br><br></p>
+</div>
+<div class="section level3">
+<h3 id="visualisation">Visualisation<a class="anchor" aria-label="anchor" href="#visualisation"></a>
+</h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Load drug screen dataset for 1 drug</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">drugScreening</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Calculate the extreme organoids for the methotrexate drug screening</span></span>
+<span><span class="co">## using a quantile of 1/3</span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getClassOneDrug.html">getClassOneDrug</a></span><span class="op">(</span>drugScreening<span class="op">=</span><span class="va">drugScreening</span>,</span>
+<span>    drugName<span class="op">=</span><span class="st">"Methotrexate"</span>, study<span class="op">=</span><span class="st">"MEGA-TEST"</span>, screenType<span class="op">=</span><span class="st">"TEST-01"</span>,</span>
+<span>    doseType<span class="op">=</span><span class="st">"Averaged"</span>, quantile<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create a density plot where drug sensitivity groups are split</span></span>
+<span><span class="va">densityGraph</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotDrugAUCDensityCurve.html">plotDrugAUCDensityCurve</a></span><span class="op">(</span><span class="va">results</span>, byGroup<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">densityGraph</span></span></code></pre></div>
+<pre><code><span><span class="co">## Picking joint bandwidth of 3.58</span></span></code></pre>
+<p><img src="OrganoidsToolBox_files/figure-html/density-1.png" width="700"></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
@@ -160,23 +222,24 @@ which this document was compiled:</p>
 <span><span class="co">## [1] OrganoidsToolBox_0.0.1 knitr_1.40             BiocStyle_2.24.0      </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] pillar_1.8.1        bslib_0.4.0         compiler_4.2.1     </span></span>
-<span><span class="co">##  [4] BiocManager_1.30.18 jquerylib_0.1.4     tools_4.2.1        </span></span>
-<span><span class="co">##  [7] digest_0.6.29       tibble_3.1.8        jsonlite_1.8.2     </span></span>
-<span><span class="co">## [10] evaluate_0.16       memoise_2.0.1       lifecycle_1.0.2    </span></span>
-<span><span class="co">## [13] gtable_0.3.1        pkgconfig_2.0.3     rlang_1.0.6        </span></span>
-<span><span class="co">## [16] cli_3.4.1           yaml_2.3.5          pkgdown_2.0.6      </span></span>
-<span><span class="co">## [19] xfun_0.33           fastmap_1.1.0       stringr_1.4.1      </span></span>
-<span><span class="co">## [22] vctrs_0.4.2         desc_1.4.2          fs_1.5.2           </span></span>
-<span><span class="co">## [25] sass_0.4.2          S4Vectors_0.34.0    systemfonts_1.0.4  </span></span>
-<span><span class="co">## [28] stats4_4.2.1        rprojroot_2.0.3     grid_4.2.1         </span></span>
-<span><span class="co">## [31] glue_1.6.2          R6_2.5.1            textshaping_0.3.6  </span></span>
-<span><span class="co">## [34] fansi_1.0.3         rmarkdown_2.16      bookdown_0.29      </span></span>
-<span><span class="co">## [37] purrr_0.3.5         ggplot2_3.3.6       magrittr_2.0.3     </span></span>
-<span><span class="co">## [40] ggridges_0.5.4      scales_1.2.1        htmltools_0.5.3    </span></span>
-<span><span class="co">## [43] BiocGenerics_0.42.0 colorspace_2.0-3    ragg_1.2.3         </span></span>
-<span><span class="co">## [46] utf8_1.2.2          stringi_1.7.8       munsell_0.5.0      </span></span>
-<span><span class="co">## [49] cachem_1.0.6</span></span></code></pre>
+<span><span class="co">##  [1] highr_0.9           pillar_1.8.1        bslib_0.4.0        </span></span>
+<span><span class="co">##  [4] compiler_4.2.1      BiocManager_1.30.18 jquerylib_0.1.4    </span></span>
+<span><span class="co">##  [7] tools_4.2.1         digest_0.6.29       tibble_3.1.8       </span></span>
+<span><span class="co">## [10] jsonlite_1.8.2      evaluate_0.17       memoise_2.0.1      </span></span>
+<span><span class="co">## [13] lifecycle_1.0.3     gtable_0.3.1        pkgconfig_2.0.3    </span></span>
+<span><span class="co">## [16] rlang_1.0.6         cli_3.4.1           yaml_2.3.5         </span></span>
+<span><span class="co">## [19] pkgdown_2.0.6       xfun_0.33           fastmap_1.1.0      </span></span>
+<span><span class="co">## [22] stringr_1.4.1       vctrs_0.4.2         desc_1.4.2         </span></span>
+<span><span class="co">## [25] fs_1.5.2            sass_0.4.2          S4Vectors_0.34.0   </span></span>
+<span><span class="co">## [28] systemfonts_1.0.4   stats4_4.2.1        rprojroot_2.0.3    </span></span>
+<span><span class="co">## [31] grid_4.2.1          glue_1.6.2          R6_2.5.1           </span></span>
+<span><span class="co">## [34] textshaping_0.3.6   fansi_1.0.3         rmarkdown_2.17     </span></span>
+<span><span class="co">## [37] bookdown_0.29       farver_2.1.1        purrr_0.3.5        </span></span>
+<span><span class="co">## [40] ggplot2_3.3.6       magrittr_2.0.3      ggridges_0.5.4     </span></span>
+<span><span class="co">## [43] scales_1.2.1        htmltools_0.5.3     BiocGenerics_0.42.0</span></span>
+<span><span class="co">## [46] colorspace_2.0-3    labeling_0.4.2      ragg_1.2.3         </span></span>
+<span><span class="co">## [49] utf8_1.2.2          stringi_1.7.8       munsell_0.5.0      </span></span>
+<span><span class="co">## [52] cachem_1.0.6</span></span></code></pre>
 <p><br><br></p>
 </div>
 <div class="section level2">

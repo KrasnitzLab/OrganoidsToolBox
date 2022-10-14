@@ -34,6 +34,12 @@
     <loc>/reference/findQuantileOneDrug.html</loc>
   </url>
   <url>
+    <loc>/reference/getClassNoReplicateOneDrug.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getClassOneDrug.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
@@ -52,13 +58,13 @@
     <loc>/reference/plotDrugAUCViolinPlot.html</loc>
   </url>
   <url>
-    <loc>/reference/selectOrgForOneDrug.html</loc>
-  </url>
-  <url>
-    <loc>/reference/selectOrgWithoutReplicateForOneDrug.html</loc>
+    <loc>/reference/selectNoReplicateOrganoids.html</loc>
   </url>
   <url>
     <loc>/reference/simpleDrugScreening.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateSelectNoReplicateOrganoids.html</loc>
   </url>
   <url>
     <loc>/reference/validateSelectOrgForOneDrug.html</loc>
