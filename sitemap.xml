@@ -34,7 +34,7 @@
     <loc>/reference/findQuantileOneDrug.html</loc>
   </url>
   <url>
-    <loc>/reference/getClassNoReplicateOneDrug.html</loc>
+    <loc>/reference/fisherCategoricalVariable.html</loc>
   </url>
   <url>
     <loc>/reference/getClassOneDrug.html</loc>
@@ -68,8 +68,5 @@
   </url>
   <url>
     <loc>/reference/validateSelectOrgForOneDrug.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateSelectOrgWithoutReplicateForOneDrug.html</loc>
   </url>
 </urlset>
