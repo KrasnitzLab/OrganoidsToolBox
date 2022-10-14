@@ -3,7 +3,6 @@
 S3method(is,DrugAUCQuantile)
 S3method(is,DrugAUCQuantileNoReplicate)
 export(fisherCategoricalVariable)
-export(getClassNoReplicateOneDrug)
 export(getClassOneDrug)
 export(plotDrugAUCDensityCurve)
 export(plotDrugAUCViolinPlot)

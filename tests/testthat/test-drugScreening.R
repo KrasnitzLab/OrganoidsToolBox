@@ -418,7 +418,7 @@ test_that("selectNoReplicateOrganoids() must return error when organoid_id colum
 })
 
 
-test_that("selectNoReplicateOrganoids() must return organoid_id column not in patient info dataset", {
+test_that("selectNoReplicateOrganoids() must return error when organoid_id column not in patient info dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
 
@@ -434,7 +434,7 @@ test_that("selectNoReplicateOrganoids() must return organoid_id column not in pa
 })
 
 
-test_that("selectNoReplicateOrganoids() must return patient_id column not in patient info dataset", {
+test_that("selectNoReplicateOrganoids() must return error when patient_id column not in patient info dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
 
@@ -444,6 +444,21 @@ test_that("selectNoReplicateOrganoids() must return patient_id column not in pat
     error_message <- paste0("Mandatory columns are missing from the ",
         "patient info dataset. The mandatory columns are: \'organoid_id\' and ",
         "\'patient_id\'.")
+
+    expect_error(selectNoReplicateOrganoids(drugScreening=drug,
+        patientInfo=patientData), error_message, fixed=TRUE)
+})
+
+
+test_that("selectNoReplicateOrganoids() must return error when organoid without patient info", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
+                            "2", "3"), stringsAsFactors=FALSE)
+
+    error_message <- paste0("Not all organoids have an associated patient",
+                                " information.")
 
     expect_error(selectNoReplicateOrganoids(drugScreening=drug,
         patientInfo=patientData), error_message, fixed=TRUE)
