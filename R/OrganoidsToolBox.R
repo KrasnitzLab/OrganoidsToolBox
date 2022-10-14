@@ -16,7 +16,7 @@
 #'
 #' @seealso
 #' \itemize{
-#' \item \code{\link{selectOrgForOneDrug}} {for selecting the organoids
+#' \item \code{\link{getClassOneDrug}} {for selecting the organoids
 #' with sensitive and resistant behavior for a specific drug screening.}
 #' }
 #' @encoding UTF-8
@@ -90,7 +90,7 @@ NULL
 #'
 #' @seealso
 #' \itemize{
-#' \item \code{\link{selectOrgForOneDrug}} { for selecting the organoids
+#' \item \code{\link{getClassOneDrug}} { for selecting the organoids
 #' with sensitive and resistant behavior for a
 #' specific drug screening.}
 #' }
@@ -106,7 +106,7 @@ NULL
 #'
 #' ## Calculate the extreme organoids for the methotrexate drug screening
 #' ## using a quantile of 1/3
-#' results <- selectOrgForOneDrug(drugScreening=simpleDrugScreening,
+#' results <- getClassOneDrug(drugScreening=simpleDrugScreening,
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     doseType="Averaged", quantile=1/3)
 #'
@@ -183,7 +183,7 @@ NULL
 #'
 #' @seealso
 #' \itemize{
-#' \item \code{\link{selectOrgForOneDrug}} { for selecting the organoids
+#' \item \code{\link{getClassOneDrug}} { for selecting the organoids
 #' with sensitive and resistant behavior for a
 #' specific drug screening.}
 #' }
@@ -199,7 +199,7 @@ NULL
 #'
 #' ## Calculate the extreme organoids for the methotrexate drug screening
 #' ## using a quantile of 1/3
-#' results <- selectOrgForOneDrug(drugScreening=drugScreening,
+#' results <- getClassOneDrug(drugScreening=drugScreening,
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     doseType="Averaged", quantile=1/4)
 #'
@@ -229,11 +229,11 @@ NULL
 #'
 #' @seealso
 #' \itemize{
-#' \item \code{\link{selectOrgForOneDrug}} { for selecting the organoids
+#' \item \code{\link{getClassOneDrug}} { for selecting the samples
 #' with sensitive and resistant behavior for a
 #' specific drug screening.}
-#' \item \code{\link{selectOrgWithoutReplicateForOneDrug}} { for selecting
-#' the unrelated organoids (only one organoid per patient)
+#' \item \code{\link{getClassNoReplicateOneDrug}} { for selecting
+#' the unrelated samples (only one sample per patient)
 #' with sensitive and resistant behavior for a
 #' specific drug screening.}
 #' }
@@ -252,7 +252,7 @@ NULL
 #'
 #' ## Calculate the extreme organoids for the methotrexate drug screening
 #' ## using a quantile of 1/3
-#' results <- selectOrgWithoutReplicateForOneDrug(drugScreening=drugScreening,
+#' results <- getClassNoReplicateOneDrug(drugScreening=drugScreening,
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     patientInfo=patientInfo, doseType="Averaged", quantile=1/4)
 #'

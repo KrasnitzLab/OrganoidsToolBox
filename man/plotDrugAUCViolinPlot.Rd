@@ -18,7 +18,7 @@ sensitive and resistant organoids for a specific drug.}
 y-axis. Default: \code{0}.}
 
 \item{max}{a single \code{numeric} representing the maximum value of the
-y-axis. The maximum value must be superior to the mimimum value.
+y-axis. The maximum value must be superior to the minimum value.
 Default: \code{100}.}
 
 \item{trim}{a \code{logical} indicating if the tails of the violins
@@ -42,7 +42,7 @@ data(drugScreening)
 
 ## Calculate the extreme organoids for the methotrexate drug screening
 ## using a quantile of 1/3
-results <- selectOrgForOneDrug(drugScreening=drugScreening,
+results <- getClassOneDrug(drugScreening=drugScreening,
     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
     doseType="Averaged", quantile=1/3)
 

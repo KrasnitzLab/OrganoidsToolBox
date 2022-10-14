@@ -78,7 +78,7 @@ data(drugScreening)
 
 ## Calculate the extreme organoids for the methotrexate drug screening
 ## using a quantile of 1/3
-results <- selectOrgForOneDrug(drugScreening=drugScreening,
+results <- getClassOneDrug(drugScreening=drugScreening,
     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
     doseType="Averaged", quantile=1/4)
 
@@ -89,7 +89,7 @@ results$extreme
 }
 \seealso{
 \itemize{
-\item \code{\link{selectOrgForOneDrug}} { for selecting the organoids
+\item \code{\link{getClassOneDrug}} { for selecting the organoids
 with sensitive and resistant behavior for a
 specific drug screening.}
 }

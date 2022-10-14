@@ -17,7 +17,8 @@ information. The mandatory columns are: 'organoid_id', 'timestamp', 'study',
 \item{drugName}{a single \code{character} string representing the
 selected drug.}
 
-\item{study}{a single \code{character} string representing the name of
+\item{study}{a \code{vector} of \code{character} string representing the
+name(s) of
 the study selected for the analyses. The study must be present in the drug
 screening dataset. The study can be found in the 'study' column of the
 drug screening dataset.}
