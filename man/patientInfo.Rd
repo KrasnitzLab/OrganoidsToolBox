@@ -29,14 +29,12 @@ data(drugScreening)
 ## Load patient information dataset for 1 drug
 data(patientInfo)
 
-## Calculate the extreme organoids for the methotrexate drug screening
-## using a quantile of 1/3
-results <- getClassNoReplicateOneDrug(drugScreening=drugScreening,
-    drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
-    patientInfo=patientInfo, doseType="Averaged", quantile=1/4)
+## Select unrelated organoids in the drug screening
+results <- selectNoReplicateOrganoids(drugScreening=drugScreening,
+    patientInfo=patientInfo)
 
-## The information of the extreme organoids is found it the 'extreme' entry
-results$extreme
+## The drug screen dataset has been filtered
+results
 
 
 }
@@ -44,11 +42,10 @@ results$extreme
 \itemize{
 \item \code{\link{getClassOneDrug}} { for selecting the samples
 with sensitive and resistant behavior for a
-specific drug screening.}
-\item \code{\link{getClassNoReplicateOneDrug}} { for selecting
-the unrelated samples (only one sample per patient)
-with sensitive and resistant behavior for a
-specific drug screening.}
+specific drug screening dataset.}
+\item \code{\link{selectNoReplicateOrganoids}} { for selecting
+the unrelated samples (only one sample per patient) from a drug screening
+dataset.}
 }
 }
 \keyword{datasets}
