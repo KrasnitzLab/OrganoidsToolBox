@@ -15,7 +15,8 @@
 #' @param drugName a single \code{character} string representing the
 #' selected drug.
 #'
-#' @param study a single \code{character} string representing the name of
+#' @param study a \code{vector} of \code{character} string representing the
+#' name(s) of
 #' the study selected for the analyses. The study must be present in the drug
 #' screening dataset. The study can be found in the 'study' column of the
 #' drug screening dataset.
@@ -52,7 +53,7 @@ filterDrugScreenOneDrug <- function(drugData, drugName, study, screenType,
                                 doseType) {
 
     ## Select the specified study
-    selectedDrug <- drugData[which(tolower(drugData$study) ==
+    selectedDrug <- drugData[which(tolower(drugData$study) %in%
                                                     tolower(study)), ]
 
     ## Select the specified screen type
@@ -302,8 +303,9 @@ findOneDrugQuantile <- function(drugData, drugName, doseType="Averaged",
 #' @param drugName a single \code{character} string representing the name of
 #' the drug selected for the analyses.
 #'
-#' @param study a single \code{character} string representing the name of
-#' the study selected for the analyses.
+#' @param study a \code{vector} of \code{character} string representing
+#' the name of the study selected for the analyses.
+#'
 #' @param screenType a \code{vector} of \code{character} string representing
 #' the type of
 #' screening selected for the analyses.
@@ -380,10 +382,10 @@ validateSelectOrgForOneDrug <- function(drugScreening, drugName, study,
 
 
 #' @title Validate input parameters for the
-#' selectOrgWithoutReplicateForOneDrug() function
+#' getClassNoReplicateOneDrug() function
 #'
 #' @description The function validates the input parameters for the
-#' selectOrgWithoutReplicateForOneDrug() function.
+#' getClassNoReplicateOneDrug() function.
 #'
 #' @param drugScreening a single \code{character} string representing the path
 #' and name of the drug screening file that contains the information needed
@@ -431,7 +433,7 @@ validateSelectOrgForOneDrug <- function(drugScreening, drugName, study,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateSelectOrgWithoutReplicateForOneDrug<- function(drugScreening,
+validateSelectOrgWithoutReplicateForOneDrug <- function(drugScreening,
     drugName, study, screenType, patientInfo, doseType, quantile) {
 
     ## Validate all but patientInfo parameter
@@ -452,3 +454,61 @@ validateSelectOrgWithoutReplicateForOneDrug<- function(drugScreening,
 
     return(0L)
 }
+
+
+#' @title Validate input parameters for the
+#' selectNoReplicateOrganoids() function
+#'
+#' @description The function validates the input parameters for the
+#' selectNoReplicateOrganoids() function.
+#'
+#' @param drugScreening a \code{data.frame} containing the drug screening
+#' information. The 'organoid_id' column is mandatory.
+#'
+#' @param patientInfo a \code{data.frame} containing the meta-data information
+#' related to the organoids. The mandatory columns are: 'organoid_id'
+#' and 'patient_id'.
+#'
+#' @return the value \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Load drug screen dataset for 1 drug
+#' data(drugScreening)
+#'
+#' ## Load patient information dataset
+#' data(patientInfo)
+#'
+#' ## Validation should return OL as all parameters are valids
+#' OrganoidsToolBox:::validateSelectNoReplicateOrganoids(
+#'     drugScreening=drugScreening, patientInfo=patientInfo)
+#'
+#' @author Astrid Deschênes, Pascal Belleau
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validateSelectNoReplicateOrganoids <- function(drugScreening,patientInfo) {
+
+    if (!is.data.frame(drugScreening)) {
+        stop("The \'drugScreening\' must be a data.frame.")
+    }
+
+    ## Check for mandatory columns in drugScreening
+    if (!('organoid_id' %in% colnames(drugScreening))) {
+        stop("The mandatory column \'organoid_id\' is missing.")
+    }
+
+    if (!is.data.frame(patientInfo)) {
+        stop("The \'patientInfo\' must be a data.frame.")
+    }
+
+    ## Check for mandatory columns in patientInfo
+    if (!all(c('organoid_id', 'patient_id') %in% colnames(patientInfo))) {
+        stop("Mandatory columns are missing from the patient info ",
+             "dataset. The mandatory columns are: \'organoid_id\' and ",
+             "\'patient_id\'.")
+    }
+
+    return(0L)
+}
+

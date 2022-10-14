@@ -4,7 +4,7 @@
 \name{validateSelectOrgWithoutReplicateForOneDrug}
 \alias{validateSelectOrgWithoutReplicateForOneDrug}
 \title{Validate input parameters for the
-selectOrgWithoutReplicateForOneDrug() function}
+getClassNoReplicateOneDrug() function}
 \usage{
 validateSelectOrgWithoutReplicateForOneDrug(
   drugScreening,
@@ -48,7 +48,7 @@ the value \code{0L} when successful.
 }
 \description{
 The function validates the input parameters for the
-selectOrgWithoutReplicateForOneDrug() function.
+getClassNoReplicateOneDrug() function.
 }
 \examples{
 

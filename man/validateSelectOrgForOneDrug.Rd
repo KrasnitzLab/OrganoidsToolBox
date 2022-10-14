@@ -24,8 +24,8 @@ to run the organoid selection. Those columns are mandatory: 'organoid_id',
 \item{drugName}{a single \code{character} string representing the name of
 the drug selected for the analyses.}
 
-\item{study}{a single \code{character} string representing the name of
-the study selected for the analyses.}
+\item{study}{a \code{vector} of \code{character} string representing
+the name of the study selected for the analyses.}
 
 \item{screenType}{a \code{vector} of \code{character} string representing
 the type of

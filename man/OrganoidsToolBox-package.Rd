@@ -12,7 +12,7 @@ To learn more about \pkg{OrganoidsToolBox} package see:
 }
 \seealso{
 \itemize{
-\item \code{\link{selectOrgForOneDrug}} {for selecting the organoids
+\item \code{\link{getClassOneDrug}} {for selecting the organoids
 with sensitive and resistant behavior for a specific drug screening.}
 }
 }

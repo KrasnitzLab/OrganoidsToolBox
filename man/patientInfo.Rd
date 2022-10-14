@@ -31,7 +31,7 @@ data(patientInfo)
 
 ## Calculate the extreme organoids for the methotrexate drug screening
 ## using a quantile of 1/3
-results <- selectOrgWithoutReplicateForOneDrug(drugScreening=drugScreening,
+results <- getClassNoReplicateOneDrug(drugScreening=drugScreening,
     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
     patientInfo=patientInfo, doseType="Averaged", quantile=1/4)
 
@@ -42,11 +42,11 @@ results$extreme
 }
 \seealso{
 \itemize{
-\item \code{\link{selectOrgForOneDrug}} { for selecting the organoids
+\item \code{\link{getClassOneDrug}} { for selecting the samples
 with sensitive and resistant behavior for a
 specific drug screening.}
-\item \code{\link{selectOrgWithoutReplicateForOneDrug}} { for selecting
-the unrelated organoids (only one organoid per patient)
+\item \code{\link{getClassNoReplicateOneDrug}} { for selecting
+the unrelated samples (only one sample per patient)
 with sensitive and resistant behavior for a
 specific drug screening.}
 }

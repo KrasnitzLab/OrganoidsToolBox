@@ -14,17 +14,16 @@
 #' screening dataset. The drug name can be found in the 'drug_a' column of the
 #' drug screening dataset.
 #'
-#' @param study a single \code{character} string representing the name of
-#' the study selected for the analyses. The study must be present in the drug
-#' screening dataset. The study can be found in the 'study' column of the
-#' drug screening dataset.
+#' @param study a \code{vector} of \code{character} string representing the
+#' name(s) of the study selected for the analyses. The study must be present
+#' in the drug screening dataset. The study can be found in the 'study' column
+#' of the drug screening dataset.
 #'
 #' @param screenType a \code{vector} of \code{character} string representing
 #' the type of
 #' screening selected for the analyses. The type must be present in the drug
 #' screening dataset. The screen type can be found in the 'screen_type'
-#' column of the
-#' drug screening dataset.
+#' column of the drug screening dataset.
 #'
 #' @param doseType a single \code{character} string representing the type of
 #' dosage selected for the analyses. The type must be present in the drug
@@ -53,7 +52,7 @@
 #'
 #' ## Calculate the extreme organoids for the methotrexate drug screening
 #' ## using a quantile of 1/3
-#' results <- selectOrgForOneDrug(drugScreening=drugScreening,
+#' results <- getClassOneDrug(drugScreening=drugScreening,
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     doseType="Averaged", quantile=1/3)
 #'
@@ -64,7 +63,7 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-selectOrgForOneDrug <- function(drugScreening, drugName, study,
+getClassOneDrug <- function(drugScreening, drugName, study,
             screenType, doseType="Averaged", quantile=1/3) {
 
     ## Validate input types
@@ -79,12 +78,12 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
     }
 
     ## The study must be present in the drug dataset
-    if (!(tolower(study) %in% tolower(unique(drugScreening$study)))) {
+    if (!any(tolower(study) %in% tolower(unique(drugScreening$study)))) {
         stop("The study \'", study, "\' is not present in the drug ",
                 "screening dataset.")
     }
 
-    ## The study must be present in the drug dataset
+    ## The screenType must be present in the drug dataset
     if (!any(tolower(screenType) %in%
             tolower(unique(drugScreening$screen_type)))) {
         stop("The screen type \'", screenType, "\' is not present in the ",
@@ -111,6 +110,69 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 
     return(results)
 }
+
+
+#' @title Select the TODO
+#'
+#' @description The function TODO
+#'
+#' @param drugScreening a \code{data.frame} that contains the drug screening
+#' results. The column is 'organoid_id' is mandatory.
+#'
+#' @param patientInfo a \code{data.frame} containing the meta-data information
+#' related to the organoids. The mandatory columns are: 'organoid_id'
+#' and 'patient_id'.
+#'
+#' @return a \code{data.frame} with the drug screening results filtered
+#' to contain with only one organoid per patient. The extra columns from the
+#' patient information dataset is added as extra columns to the final dataset.
+#'
+#' @examples
+#'
+#' ## Load drug screen dataset for 1 drug
+#' data(drugScreening)
+#'
+#' ## Load patient information dataset for 1 drug
+#' data(patientInfo)
+#'
+#' ## Set seed to get reproducible results
+#' set.seed(1212)
+#'
+#' results <- selectNoReplicateOrganoids(drugScreening=drugScreening,
+#'     patientInfo=patientInfo)
+#'
+#' ## TODO
+#' results
+#'
+#' @author Astrid Deschênes, Pascal Belleau
+#' @encoding UTF-8
+#' @export
+selectNoReplicateOrganoids <- function(drugScreening, patientInfo) {
+
+    ## Validate input types
+    validateSelectNoReplicateOrganoids(drugScreening=drugScreening,
+                                                    patientInfo=patientInfo)
+
+    ## All organoids should have an associated patient information
+    if (!all(unique(drugScreening$organoid_id) %in%
+             patientInfo$organoid_id)) {
+        stop("Not all organoids have an associated patient information.")
+    }
+
+    merged_data <- merge(drugScreening, patientInfo, by="organoid_id",
+                            all=FALSE)
+
+    shuffled_data <- merged_data[sample(1:nrow(merged_data), replace=FALSE), ]
+
+    noReplicate <-  shuffled_data[!duplicated(shuffled_data$patient_id), ]
+
+    noReplicate <- noReplicate[order(noReplicate$organoid_id), ]
+
+    rownames(noReplicate) <- noReplicate$organoid_id
+
+    return(noReplicate)
+}
+
 
 #' @title Select the organoids with sensitive and resistant behavior for a
 #' specific drug screening
@@ -140,8 +202,7 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 #' the type of
 #' screening selected for the analyses. The type must be present in the drug
 #' screening dataset. The screen type can be found in the 'screen_type'
-#' column of the
-#' drug screening dataset.
+#' column of the drug screening dataset.
 #'
 #' @param patientInfo a \code{data.frame} containing the meta-data information
 #' related to the organoids. The mandatory columns are: 'organoid_id'
@@ -177,7 +238,7 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 #'
 #' ## Calculate the extreme organoids for the methotrexate drug screening
 #' ## using a quantile of 1/3
-#' results <- selectOrgWithoutReplicateForOneDrug(drugScreening=drugScreening,
+#' results <- getClassNoReplicateOneDrug(drugScreening=drugScreening,
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     patientInfo=patientInfo, doseType="Averaged", quantile=1/3)
 #'
@@ -188,7 +249,7 @@ selectOrgForOneDrug <- function(drugScreening, drugName, study,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-selectOrgWithoutReplicateForOneDrug <- function(drugScreening, drugName, study,
+getClassNoReplicateOneDrug <- function(drugScreening, drugName, study,
     screenType, patientInfo, doseType="Averaged", quantile=1/3) {
 
     ## Validate input types
@@ -238,9 +299,9 @@ selectOrgWithoutReplicateForOneDrug <- function(drugScreening, drugName, study,
     shuffled_data <- merged_data[sample(1:nrow(merged_data),
                                                 replace=FALSE), ]
 
-    newData <-  shuffled_data[!duplicated(shuffled_data$patient_id), ]
+    noReplicate <-  shuffled_data[!duplicated(shuffled_data$patient_id), ]
 
-    results <- findQuantileOneDrug(cleanDrugData=newData, quantile=quantile)
+    results <- findQuantileOneDrug(cleanDrugData=noReplicate, quantile=quantile)
 
     results[["datasetWithReplicates"]] <- shuffled_data
 
@@ -280,7 +341,7 @@ selectOrgWithoutReplicateForOneDrug <- function(drugScreening, drugName, study,
 #'
 #' ## Calculate the extreme organoids for the methotrexate drug screening
 #' ## using a quantile of 1/3
-#' results <- selectOrgForOneDrug(drugScreening=drugScreening,
+#' results <- getClassOneDrug(drugScreening=drugScreening,
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     doseType="Averaged", quantile=1/3)
 #'
@@ -392,7 +453,7 @@ plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
 #'
 #' ## Calculate the extreme organoids for the methotrexate drug screening
 #' ## using a quantile of 1/3
-#' results <- selectOrgForOneDrug(drugScreening=drugScreening,
+#' results <- getClassOneDrug(drugScreening=drugScreening,
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     doseType="Averaged", quantile=1/3)
 #'
@@ -410,8 +471,10 @@ plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
 plotDrugAUCViolinPlot <- function(drugQuantile, min=0, max=100, trim=FALSE) {
 
     ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
-    if (!is.DrugAUCQuantile(drugQuantile)) {
-        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile object.")
+    if (!(is.DrugAUCQuantile(drugQuantile) ||
+          is.DrugAUCQuantileNoReplicate(drugQuantile))) {
+        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile or ",
+             "DrugAUCQuantileNoReplicate object.")
     }
 
     ## Validate that the min is a single numeric

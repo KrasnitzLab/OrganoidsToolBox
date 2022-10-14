@@ -4,12 +4,12 @@ library(OrganoidsToolBox)
 
 
 #############################################################################
-### Tests selectOrgForOneDrug() results
+### Tests getClassOneDrug() results
 #############################################################################
 
-context("selectOrgForOneDrug() results")
+context("getClassOneDrug() results")
 
-test_that("selectOrgForOneDrug() must return error when drug information missing columns", {
+test_that("getClassOneDrug() must return error when drug information missing columns", {
 
     drugData <- data.frame(organoid_id=c("A", "B", "C"), dosage_type=c("TOP",
                     "TOP", "TOP"), drug_a=c("Metho", "Metho", "Placebo"),
@@ -21,140 +21,140 @@ test_that("selectOrgForOneDrug() must return error when drug information missing
         "\'drug_a\', \'drug_b\', \'drug_c\', \'drug_background\' and ",
         "\'relative_auc\'.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drugData, drugName="Metho",
+    expect_error(getClassOneDrug(drugScreening=drugData, drugName="Metho",
         study="MEGA-TEST", screenType="TEST-01", doseType="Averaged",
         quantile=1/3), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when drug screening is a numeric", {
+test_that("getClassOneDrug() must return error when drug screening is a numeric", {
 
     error_message <- paste0("The \'drugScreening\' must be a data.frame.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=33, drugName="Metho",
+    expect_error(getClassOneDrug(drugScreening=33, drugName="Metho",
             study="MEGA-TEST", screenType="TEST-01", doseType="Averaged",
             quantile=1/3), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when drug name is a numeric", {
+test_that("getClassOneDrug() must return error when drug name is a numeric", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
     error_message <- paste0("The \'drugName\' must be a single character ",
                                 "string.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName=22,
+    expect_error(getClassOneDrug(drugScreening=drug, drugName=22,
                 study="MEGA-TEST", screenType="TEST-01", doseType="Averaged",
                 quantile=1/3), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when drug name is a vector of strings", {
+test_that("getClassOneDrug() must return error when drug name is a vector of strings", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
     error_message <- paste0("The \'drugName\' must be a single character ",
                                 "string.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug,
+    expect_error(getClassOneDrug(drugScreening=drug,
         drugName=c("Drug1", "Drug2"), study="MEGA-TEST", screenType="TEST-01",
         doseType="Averaged", quantile=1/3), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when study is a numeric", {
+test_that("getClassOneDrug() must return error when study is a numeric", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
     error_message <- paste0("The \'study\' must be a vector of character ",
                                     "strings.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Metho",
                 study=33, screenType="TEST-01", doseType="Averaged",
                 quantile=1/3), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when screenType is a numeric", {
+test_that("getClassOneDrug() must return error when screenType is a numeric", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
     error_message <- paste0("The \'screenType\' must be a vector of character",
                                     " strings.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Metho",
                 study="MEGA", screenType=33, doseType="Averaged",
                 quantile=1/3), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when doseType is a numeric", {
+test_that("getClassOneDrug() must return error when doseType is a numeric", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
     error_message <- paste0("The \'doseType\' must be a single character ",
                                     "string.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Metho",
                     study="MEGA", screenType="TEST", doseType=22,
                     quantile=1/3), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when doseType is a vector of strings", {
+test_that("getClassOneDrug() must return error when doseType is a vector of strings", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
     error_message <- paste0("The \'doseType\' must be a single character ",
                                         "string.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Metho",
             study="MEGA", screenType="TEST", doseType=c("TypeA", "TypeB"),
             quantile=1/3), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when quantile is a string", {
+test_that("getClassOneDrug() must return error when quantile is a string", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
     error_message <- paste0("The \'quantile\' must be a single positive ",
                                 "numeric between 0 and 0.5.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Metho",
             study="MEGA", screenType="TEST", doseType="Averaged",
             quantile="1/3"), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when quantile negative numeric", {
+test_that("getClassOneDrug() must return error when quantile negative numeric", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
     error_message <- paste0("The \'quantile\' must be a single positive ",
                             "numeric between 0 and 0.5.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Metho",
             study="MEGA", screenType="TEST", doseType="Averaged",
             quantile=-0.02), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when quantile above 0.5", {
+test_that("getClassOneDrug() must return error when quantile above 0.5", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
     error_message <- paste0("The \'quantile\' must be a single positive ",
                             "numeric between 0 and 0.5.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Metho",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Metho",
             study="MEGA", screenType="TEST", doseType="Averaged",
             quantile=0.5000001), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when drug not in the dataset", {
+test_that("getClassOneDrug() must return error when drug not in the dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
@@ -163,13 +163,13 @@ test_that("selectOrgForOneDrug() must return error when drug not in the dataset"
     error_message <- paste0("The drug \'", drugName, "\' is not present ",
                       "in the drug screening dataset.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName=drugName,
+    expect_error(getClassOneDrug(drugScreening=drug, drugName=drugName,
             study="MEGA", screenType="TEST", doseType="Averaged",
             quantile=0.2), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when study not in the dataset", {
+test_that("getClassOneDrug() must return error when study not in the dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
@@ -178,13 +178,13 @@ test_that("selectOrgForOneDrug() must return error when study not in the dataset
     error_message <- paste0("The study \'", study, "\' is not present in ",
                                 "the drug screening dataset.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Methotrexate",
             study=study, screenType="TEST", doseType="Averaged",
             quantile=0.2), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when screen type not in the dataset", {
+test_that("getClassOneDrug() must return error when screen type not in the dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
@@ -193,13 +193,13 @@ test_that("selectOrgForOneDrug() must return error when screen type not in the d
     error_message <- paste0("The screen type \'", screenType, "\' is not ",
                                 "present in the drug screening dataset.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Methotrexate",
             study="MEGA-TEST", screenType=screenType, doseType="Averaged",
             quantile=0.2), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when drug not in the dataset", {
+test_that("getClassOneDrug() must return error when drug not in the dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
@@ -208,13 +208,13 @@ test_that("selectOrgForOneDrug() must return error when drug not in the dataset"
     error_message <- paste0("The screen type \'", screenType, "\' is not ",
                             "present in the drug screening dataset.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Methotrexate",
         study="MEGA-TEST", screenType=screenType, doseType="Averaged",
         quantile=0.2), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return error when drug not in the dataset", {
+test_that("getClassOneDrug() must return error when drug not in the dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile.RDS"))
 
@@ -223,19 +223,19 @@ test_that("selectOrgForOneDrug() must return error when drug not in the dataset"
     error_message <- paste0("The dossage type \'", doseType, "\' is ",
                                 "not present in the drug screening dataset.")
 
-    expect_error(selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+    expect_error(getClassOneDrug(drugScreening=drug, drugName="Methotrexate",
         study="MEGA-TEST", screenType="TEST-01", doseType=doseType,
         quantile=0.2), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgForOneDrug() must return expected results 01", {
+test_that("getClassOneDrug() must return expected results 01", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
 
     study <- "MEGA-TEST"
 
-    results <- selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+    results <- getClassOneDrug(drugScreening=drug, drugName="Methotrexate",
         study=study, screenType="TEST-01", doseType="Averaged", quantile=0.2)
 
     expected <- list()
@@ -267,7 +267,7 @@ test_that("selectOrgForOneDrug() must return expected results 01", {
 
     study <- "MEGA-TEST"
 
-    results <- selectOrgForOneDrug(drugScreening=drug, drugName="Methotrexate",
+    results <- getClassOneDrug(drugScreening=drug, drugName="Methotrexate",
         study=study, screenType=c("TEST-01", "TEST-02"), doseType="Averaged",
         quantile=0.1)
 
@@ -290,8 +290,8 @@ context("plotDrugAUCViolinPlot() results")
 
 test_that("plotDrugAUCViolinPlot() must return error when drugQuantile is character string", {
 
-    error_message <- paste0("The \'drugQuantile\' parameter must be ",
-                                "a DrugAUCQuantile object.")
+    error_message <- paste0("The \'drugQuantile\' parameter must ",
+        "be a DrugAUCQuantile or DrugAUCQuantileNoReplicate object.")
 
     expect_error(plotDrugAUCViolinPlot(drugQuantile="test", min=0, max=100,
         trim=FALSE), error_message, fixed=TRUE)
@@ -371,101 +371,105 @@ test_that("plotDrugAUCViolinPlot() must return error when byGroup is character s
 })
 
 
-
-
 #############################################################################
-### Tests selectOrgWithoutReplicateForOneDrug() results
+### Tests selectNoReplicateOrganoids() results
 #############################################################################
 
-context("selectOrgWithoutReplicateForOneDrug() results")
+context("selectNoReplicateOrganoids() results")
 
-test_that("selectOrgWithoutReplicateForOneDrug() must return error when drugname not in drug dataset", {
+test_that("selectNoReplicateOrganoids() must return error when drugscreen is a numeric", {
 
-    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+    drug <- 33
 
     patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
         "2", "3"), stringsAsFactors=FALSE)
 
-    drugName <- "TOTO"
+    error_message <- "The \'drugScreening\' must be a data.frame."
 
-    error_message <- paste0("The drug \'", drugName, "\' is not present ",
-                            "in the drug screening dataset.")
-
-    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
-        drugName=drugName, study="MEGA-TEST", patientInfo=patientData,
-        screenType="TEST-01", doseType="Averaged", quantile=1/3),
-        error_message, fixed=TRUE)
+    expect_error(selectNoReplicateOrganoids(drugScreening=drug,
+        patientInfo=patientData), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgWithoutReplicateForOneDrug() must return error when study not in drug dataset", {
+test_that("selectNoReplicateOrganoids() must return error when patientInfo is a numeric", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
 
-    patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
-            "2", "3"), stringsAsFactors=FALSE)
+    patientData <- 33
 
-    study <- "MEGA"
+    error_message <- "The \'patientInfo\' must be a data.frame."
 
-    error_message <- paste0("The study \'", study, "\' is not present ",
-                        "in the drug screening dataset.")
-
-    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
-        drugName="Methotrexate", study=study, patientInfo=patientData,
-        screenType="TEST-01", doseType="Averaged", quantile=1/3),
-        error_message, fixed=TRUE)
+    expect_error(selectNoReplicateOrganoids(drugScreening=drug,
+        patientInfo=patientData), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgWithoutReplicateForOneDrug() must return error when screening type not in drug dataset", {
+test_that("selectNoReplicateOrganoids() must return error when organoid_id column not in drug dataset", {
 
-    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+    drug <- data.frame(organoids_id=c("A", "B", "C"), auc=c(12, 21, 22))
 
     patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
                         "2", "3"), stringsAsFactors=FALSE)
 
-    screenType <- "CANADA"
+    error_message <- "The mandatory column \'organoid_id\' is missing."
 
-    error_message <- paste0("The screen type \'", screenType, "\' is ",
-                        "not present in the drug screening dataset.")
-
-    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
-        drugName="Methotrexate", study="MEGA-TEST", patientInfo=patientData,
-        screenType=screenType, doseType="Averaged", quantile=1/3),
-                 error_message, fixed=TRUE)
+    expect_error(selectNoReplicateOrganoids(drugScreening=drug,
+        patientInfo=patientData),  error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgWithoutReplicateForOneDrug() must return error when dosage type not in drug dataset", {
+test_that("selectNoReplicateOrganoids() must return organoid_id column not in patient info dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
 
-    patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
+    patientData <- data.frame(organoids_id=c("A", "B", "C"), patient_id=c("1",
                         "2", "3"), stringsAsFactors=FALSE)
 
-    dosage <- "CANADA"
+    error_message <- paste0("Mandatory columns are missing from the ",
+        "patient info dataset. The mandatory columns are: \'organoid_id\' and ",
+        "\'patient_id\'.")
 
-    error_message <- paste0("The dosage type \'", dosage, "\' is not ",
-                            "present in the drug screening dataset.")
-
-    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
-        drugName="Methotrexate", study="MEGA-TEST", patientInfo=patientData,
-        screenType="TEST-01", doseType=dosage, quantile=1/3),
-        error_message, fixed=TRUE)
+    expect_error(selectNoReplicateOrganoids(drugScreening=drug,
+        patientInfo=patientData), error_message, fixed=TRUE)
 })
 
 
-test_that("selectOrgWithoutReplicateForOneDrug() must return error when dosage type not in drug dataset", {
+test_that("selectNoReplicateOrganoids() must return patient_id column not in patient info dataset", {
 
     drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
 
-    patientData <- data.frame(organoid_id=c("A", "B", "C"), patient_id=c("1",
-        "2", "3"), stringsAsFactors=FALSE)
+    patientData <- data.frame(organoid_id=c("A", "B", "C"), patients_id=c("1",
+                            "2", "3"), stringsAsFactors=FALSE)
 
-    error_message <- "Not all organoids have an associated patient information."
+    error_message <- paste0("Mandatory columns are missing from the ",
+        "patient info dataset. The mandatory columns are: \'organoid_id\' and ",
+        "\'patient_id\'.")
 
-    expect_error(selectOrgWithoutReplicateForOneDrug(drugScreening=drug,
-        drugName="Methotrexate", study="MEGA-TEST", patientInfo=patientData,
-        screenType="TEST-01", doseType="Averaged", quantile=1/3),
-        error_message, fixed=TRUE)
+    expect_error(selectNoReplicateOrganoids(drugScreening=drug,
+        patientInfo=patientData), error_message, fixed=TRUE)
+})
+
+
+test_that("selectNoReplicateOrganoids() must return expected results", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+    drug <- drug[, c("organoid_id", "study")]
+
+    patientData <- data.frame(organoid_id=c("hT1001", "hT1082", "hT1919",
+        "hT3312", "hT1051", "hT2211", "hT2212", "hT2213", "hT2251"),
+        patient_id=c("1", "2", "3", "2", "3", "4", "4", "6", "7"),
+        stringsAsFactors=FALSE)
+
+    set.seed(1212)
+
+    result <- selectNoReplicateOrganoids(drugScreening=drug,
+                               patientInfo=patientData)
+
+    expected <- data.frame(organoid_id=c( "hT1001", "hT1919",  "hT2212",
+        "hT2213", "hT2251", "hT3312"), study=c(rep("MEGA-TEST", 4),
+        "SUPER-TEST", "MEGA-TEST"),
+        patient_id=c("1", "3", "4", "6", "7", "2"), stringsAsFactors=FALSE)
+    rownames(expected) <- expected$organoid_id
+
+    expect_equal(result, expected)
 })
