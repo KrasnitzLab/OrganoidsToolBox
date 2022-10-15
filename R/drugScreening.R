@@ -154,8 +154,7 @@ selectNoReplicateOrganoids <- function(drugScreening, patientInfo) {
                                                     patientInfo=patientInfo)
 
     ## All organoids should have an associated patient information
-    if (!all(unique(drugScreening$organoid_id) %in%
-             patientInfo$organoid_id)) {
+    if (!all(unique(drugScreening$organoid_id) %in% patientInfo$organoid_id)) {
         stop("Not all organoids have an associated patient information.")
     }
 

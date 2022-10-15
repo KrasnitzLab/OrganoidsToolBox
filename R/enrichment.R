@@ -40,7 +40,7 @@ fisherCategoricalVariable <- function(drugQuantile, category) {
     ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
     if (!(is.DrugAUCQuantile(drugQuantile))) {
         stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile ",
-             "object.")
+                "object.")
     }
 
     if (!is.character(category)) {
@@ -50,7 +50,7 @@ fisherCategoricalVariable <- function(drugQuantile, category) {
     ## The drug must be present in the drug dataset
     if (!(category %in% colnames(drugQuantile$extreme))) {
         stop("The category \'", category, "\' must be one of the columns in ",
-             "the \'DrugAUCQuantile\' dataset.")
+                "the \'DrugAUCQuantile\' dataset.")
     }
 
     results <- drugQuantile$extreme
@@ -63,7 +63,7 @@ fisherCategoricalVariable <- function(drugQuantile, category) {
     all <- list()
     for (i in categoryAll) {
         all[[i]] <- data.frame(V1=c(sum(sensitive[[category]] == i),
-                                   sum(resistant[[category]] == i)))
+                                        sum(resistant[[category]] == i)))
         colnames(all[[i]]) <- i
         rownames(all[[i]]) <- c("SENSITIVE", "RESISTANT")
     }
