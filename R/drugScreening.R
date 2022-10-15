@@ -184,8 +184,7 @@ selectNoReplicateOrganoids <- function(drugScreening, patientInfo) {
 #' returns a "\code{ggplot}" object. The density plot can be split by
 #' sensitivity classes.
 #'
-#' @param drugQuantile an object of class "\code{DrugAUCQuantile}" or
-#' "\code{DrugAUCQuantileNoReplicate}" which
+#' @param drugQuantile an object of class "\code{DrugAUCQuantile}" which
 #' contains the sensitive and resistant information for organoids associated
 #' to a specific drug screening.
 #'
@@ -220,10 +219,9 @@ selectNoReplicateOrganoids <- function(drugScreening, patientInfo) {
 plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
 
     ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
-    if (!(is.DrugAUCQuantile(drugQuantile) ||
-            is.DrugAUCQuantileNoReplicate(drugQuantile))) {
-        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile or ",
-                "DrugAUCQuantileNoReplicate object.")
+    if (!(is.DrugAUCQuantile(drugQuantile))) {
+        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile ",
+                "object.")
     }
 
     ## Validate that the byGroup is logical
@@ -333,10 +331,9 @@ plotDrugAUCDensityCurve <- function(drugQuantile, byGroup=FALSE) {
 plotDrugAUCViolinPlot <- function(drugQuantile, min=0, max=100, trim=FALSE) {
 
     ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
-    if (!(is.DrugAUCQuantile(drugQuantile) ||
-          is.DrugAUCQuantileNoReplicate(drugQuantile))) {
-        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile or ",
-             "DrugAUCQuantileNoReplicate object.")
+    if (!(is.DrugAUCQuantile(drugQuantile))) {
+        stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile",
+                " object.")
     }
 
     ## Validate that the min is a single numeric

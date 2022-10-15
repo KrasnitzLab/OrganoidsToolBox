@@ -7,12 +7,8 @@
 #' @param drugQuantile an object of class "\code{DrugAUCQuantile}" which
 #' contains the sensitive and resistant organoids for a specific drug.
 #'
-#' @param patientInfo  a \code{data.frame} containing the meta-data information
-#' related to the organoids. The mandatory columns are: 'organoid_id'
-#' and 'patient_id'.
-#'
 #' @param category a single \code{character} string representing the column
-#' from the 'patientInfo' dataset that should be used as the
+#' from the "\code{DrugAUCQuantile}" extreme dataset that should be used as the
 #' categorical variable.
 #'
 #' @return a \code{list} containing 2 components:
@@ -32,24 +28,19 @@
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     doseType="Averaged", quantile=1/3)
 #'
-#' ## The classification of the organoids is in the 'extreme' entry
+#' ## TODO
 #' results$extreme
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom stats fisher.test
 #' @encoding UTF-8
 #' @export
-fisherCategoricalVariable <- function(drugQuantile, patientInfo, category) {
+fisherCategoricalVariable <- function(drugQuantile, category) {
 
     ## Validate that the drugQuantile parameter is a DrugAUCQuantile object
-    if (!(is.DrugAUCQuantile(drugQuantile) ||
-          is.DrugAUCQuantileNoReplicate(drugQuantile))) {
+    if (!(is.DrugAUCQuantile(drugQuantile))) {
         stop("The \'drugQuantile\' parameter must be a DrugAUCQuantile ",
              "object.")
-    }
-
-    if (!is.data.frame(patientInfo)) {
-        stop("The \'patientInfo\' parameter must be a data.frame.")
     }
 
     if (!is.character(category)) {
@@ -57,20 +48,17 @@ fisherCategoricalVariable <- function(drugQuantile, patientInfo, category) {
     }
 
     ## The drug must be present in the drug dataset
-    if (!(category %in% colnames(patientInfo))) {
+    if (!(category %in% colnames(drugQuantile$extreme))) {
         stop("The category \'", category, "\' must be one of the columns in ",
-             "the \'patientInfo\' dataset.")
+             "the \'DrugAUCQuantile\' dataset.")
     }
 
     results <- drugQuantile$extreme
 
-    resultsD <- merge(results, patientInfo[, c("organoid_id", category)],
-                      by="organoid_id", all.x = TRUE)
+    sensitive <- results[results$group == "SENSITIVE",]
+    resistant <- results[results$group == "RESISTANT",]
 
-    sensitive <- resultsD[resultsD$group == "SENSITIVE",]
-    resistant <- resultsD[resultsD$group == "RESISTANT",]
-
-    categoryAll <- unique(resultsD[[category]])
+    categoryAll <- unique(results[[category]])
 
     all <- list()
     for (i in categoryAll) {

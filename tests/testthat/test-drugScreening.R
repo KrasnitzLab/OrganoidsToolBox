@@ -291,7 +291,7 @@ context("plotDrugAUCViolinPlot() results")
 test_that("plotDrugAUCViolinPlot() must return error when drugQuantile is character string", {
 
     error_message <- paste0("The \'drugQuantile\' parameter must ",
-        "be a DrugAUCQuantile or DrugAUCQuantileNoReplicate object.")
+        "be a DrugAUCQuantile object.")
 
     expect_error(plotDrugAUCViolinPlot(drugQuantile="test", min=0, max=100,
         trim=FALSE), error_message, fixed=TRUE)
@@ -353,7 +353,7 @@ context("plotDrugAUCViolinPlot() results")
 test_that("plotDrugAUCDensityCurve() must return error when drugQuantile is character string", {
 
     error_message <- paste0("The \'drugQuantile\' parameter must be a ",
-        "DrugAUCQuantile or DrugAUCQuantileNoReplicate object.")
+        "DrugAUCQuantile object.")
 
     expect_error(plotDrugAUCDensityCurve(drugQuantile="33", byGroup=FALSE),
                         error_message, fixed=TRUE)
