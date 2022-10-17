@@ -61,7 +61,7 @@ resistant groups using a categorical value. TODO</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fisherCategoricalVariable</span><span class="op">(</span><span class="va">drugQuantile</span>, <span class="va">patientInfo</span>, <span class="va">category</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fisherCategoricalVariable</span><span class="op">(</span><span class="va">drugQuantile</span>, <span class="va">category</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -71,15 +71,9 @@ resistant groups using a categorical value. TODO</p>
 contains the sensitive and resistant organoids for a specific drug.</p></dd>
 
 
-<dt>patientInfo</dt>
-<dd><p>a <code>data.frame</code> containing the meta-data information
-related to the organoids. The mandatory columns are: 'organoid_id'
-and 'patient_id'.</p></dd>
-
-
 <dt>category</dt>
 <dd><p>a single <code>character</code> string representing the column
-from the 'patientInfo' dataset that should be used as the
+from the "<code>DrugAUCQuantile</code>" extreme dataset that should be used as the
 categorical variable.</p></dd>
 
 </dl></div>
@@ -107,7 +101,7 @@ categorical variable.</p></dd>
 <span class="r-in"><span>    drugName<span class="op">=</span><span class="st">"Methotrexate"</span>, study<span class="op">=</span><span class="st">"MEGA-TEST"</span>, screenType<span class="op">=</span><span class="st">"TEST-01"</span>,</span></span>
 <span class="r-in"><span>    doseType<span class="op">=</span><span class="st">"Averaged"</span>, quantile<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The classification of the organoids is in the 'extreme' entry</span></span></span>
+<span class="r-in"><span><span class="co">## TODO</span></span></span>
 <span class="r-in"><span><span class="va">results</span><span class="op">$</span><span class="va">extreme</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    organoid_id relative_auc     group</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        hT192     33.11044 SENSITIVE</span>
