@@ -6,18 +6,14 @@
 \title{Run Fisher tests in the sensitive and resistant groups
 using a categorical value}
 \usage{
-fisherCategoricalVariable(drugQuantile, patientInfo, category)
+fisherCategoricalVariable(drugQuantile, category)
 }
 \arguments{
 \item{drugQuantile}{an object of class "\code{DrugAUCQuantile}" which
 contains the sensitive and resistant organoids for a specific drug.}
 
-\item{patientInfo}{a \code{data.frame} containing the meta-data information
-related to the organoids. The mandatory columns are: 'organoid_id'
-and 'patient_id'.}
-
 \item{category}{a single \code{character} string representing the column
-from the 'patientInfo' dataset that should be used as the
+from the "\code{DrugAUCQuantile}" extreme dataset that should be used as the
 categorical variable.}
 }
 \value{
@@ -42,7 +38,7 @@ results <- getClassOneDrug(drugScreening=drugScreening,
     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
     doseType="Averaged", quantile=1/3)
 
-## The classification of the organoids is in the 'extreme' entry
+## TODO
 results$extreme
 
 }

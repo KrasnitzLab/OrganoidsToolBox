@@ -430,8 +430,8 @@ validateSelectNoReplicateOrganoids <- function(drugScreening,patientInfo) {
     ## Check for mandatory columns in patientInfo
     if (!all(c('organoid_id', 'patient_id') %in% colnames(patientInfo))) {
         stop("Mandatory columns are missing from the patient info ",
-             "dataset. The mandatory columns are: \'organoid_id\' and ",
-             "\'patient_id\'.")
+                "dataset. The mandatory columns are: \'organoid_id\' and ",
+                "\'patient_id\'.")
     }
 
     return(0L)

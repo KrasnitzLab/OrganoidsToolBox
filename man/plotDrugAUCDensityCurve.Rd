@@ -10,8 +10,7 @@ drug.}
 plotDrugAUCDensityCurve(drugQuantile, byGroup = FALSE)
 }
 \arguments{
-\item{drugQuantile}{an object of class "\code{DrugAUCQuantile}" or
-"\code{DrugAUCQuantileNoReplicate}" which
+\item{drugQuantile}{an object of class "\code{DrugAUCQuantile}" which
 contains the sensitive and resistant information for organoids associated
 to a specific drug screening.}
 

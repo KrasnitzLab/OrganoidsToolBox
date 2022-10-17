@@ -13,14 +13,25 @@ context("fisherCategoricalVariable() results")
 
 test_that("fisherCategoricalVariable() must return error when drugQuantile is numeric", {
 
-    patientData <- data.frame(organoid_id=c("hT1001", "hT1082", "hT1919",
-        "hT3312", "hT1051", "hT2211", "hT2212", "hT2213", "hT2251"),
-        patient_id=c("1", "2", "3", "2", "3", "4", "4", "6", "7"),
-        stringsAsFactors=FALSE)
-
     error_message <- paste0("The \'drugQuantile\' parameter must be a ",
                                     "DrugAUCQuantile object.")
 
-    expect_error(fisherCategoricalVariable(drugQuantile=33,
-        patientInfo=patientData, category="test"), error_message, fixed=TRUE)
+    expect_error(fisherCategoricalVariable(drugQuantile=33, category="test"),
+        error_message, fixed=TRUE)
+})
+
+
+test_that("fisherCategoricalVariable() must return error when category is numeric", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    results <- getClassOneDrug(drugScreening=drug, drugName="Methotrexate",
+        study="MEGA-TEST", screenType="TEST-01", doseType="Averaged",
+        quantile=0.2)
+
+    error_message <- paste0("The \'category\' parameter must be a character",
+                                    " string.")
+
+    expect_error(fisherCategoricalVariable(drugQuantile=results,
+       category=22), error_message, fixed=TRUE)
 })
