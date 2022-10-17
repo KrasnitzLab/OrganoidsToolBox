@@ -72,8 +72,15 @@ filterDrugScreenOneDrug <- function(drugData, drugName, study, screenType,
                                         orgDR.avr$drug_background == "N/A"), ]
 
     ## Remove duplicate lines
-    orgDR.avr.u <- orgDR.avr[-1 * which(duplicated(orgDR.avr[,
+    duplicates <- which(duplicated(orgDR.avr[,
+                               c("organoid_id", "timestamp", "drug_a")]))
+
+    ## when duplicates present
+    orgDR.avr.u <- orgDR.avr
+    if (length(duplicates) > 0) {
+        orgDR.avr.u <- orgDR.avr[-1 * which(duplicated(orgDR.avr[,
                                 c("organoid_id", "timestamp", "drug_a")])),]
+    }
 
     return(orgDR.avr.u)
 }

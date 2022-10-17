@@ -282,6 +282,29 @@ test_that("selectOrgForOneDrug() must return expected results 01", {
 })
 
 
+test_that("selectOrgForOneDrug() must return expected results when no duplicate", {
+
+    drug <- readRDS(test_path("fixtures", "OneDrugDemoFile02.RDS"))
+
+    drug <- unique(drug[, ! colnames(drug) %in% c("Column1", "percent_viability", "dosage_concentration_a")])
+
+    study <- "MEGA-TEST"
+
+    results <- getClassOneDrug(drugScreening=drug, drugName="Methotrexate",
+        study=study, screenType=c("TEST-01", "TEST-02"), doseType="Averaged",
+                    quantile=0.2)
+
+    expected <- list()
+    expected[["upper"]] <- 70.58067051400000480044
+    expected[["lower"]] <- 52.99675428000000465545
+
+    expect_true(is.DrugAUCQuantile(results))
+    expect_equal(results$quantile$lower, expected$lower)
+    expect_equal(results$quantile$upper, expected$upper)
+
+})
+
+
 #############################################################################
 ### Tests plotDrugAUCViolinPlot() results
 #############################################################################
