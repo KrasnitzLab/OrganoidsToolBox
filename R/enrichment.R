@@ -19,17 +19,23 @@
 #'
 #' @examples
 #'
-#' ## Load drug screen dataset for 1 drug
-#' data(drugScreening)
+#' ## Load drug screen dataset and patient information for methotrexate
+#' data(drugScreeningMethoSet)
+#' data(patientInfoMethoSet)
+#'
+#' ## Retain unreplicated samples
+#' cleanData <- selectNoReplicateOrganoids(drugScreening=drugScreeningMethoSet,
+#'     patientInfo=patientInfoMethoSet)
 #'
 #' ## Calculate the extreme organoids for the methotrexate drug screening
 #' ## using a quantile of 1/3
-#' results <- getClassOneDrug(drugScreening=drugScreening,
+#' results <- getClassOneDrug(drugScreening=cleanData,
 #'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
 #'     doseType="Averaged", quantile=1/3)
 #'
-#' ## TODO
-#' results$extreme
+#' ## Fisher test on ancestry
+#' fisherT <- fisherCategoricalVariable(drugQuantile=results,
+#'     category="ancestry")
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom stats fisher.test
@@ -48,12 +54,19 @@ fisherCategoricalVariable <- function(drugQuantile, category) {
     }
 
     ## The drug must be present in the drug dataset
-    if (!(category %in% colnames(drugQuantile$extreme))) {
+    if (!(category %in% colnames(drugQuantile$extreme) ||
+            category %in% colnames(drugQuantile$dataset))) {
         stop("The category \'", category, "\' must be one of the columns in ",
                 "the \'DrugAUCQuantile\' dataset.")
     }
 
     results <- drugQuantile$extreme
+
+    if (!(category %in% colnames(drugQuantile$extreme))) {
+        results <- merge(results, drugQuantile$dataset[,
+                                                c("organoid_id", category)],
+                            by="organoid_id", all.x=TRUE, all.y=FALSE)
+    }
 
     sensitive <- results[results$group == "SENSITIVE",]
     resistant <- results[results$group == "RESISTANT",]
@@ -75,6 +88,7 @@ fisherCategoricalVariable <- function(drugQuantile, category) {
     result <- list()
     result[["Fisher"]] <- fisherResult
     result[["table"]] <- allTable
+    result[["category"]] <- category
 
     return(result)
 }

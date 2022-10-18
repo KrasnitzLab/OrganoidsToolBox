@@ -29,17 +29,23 @@ resistant groups using a categorical value. TODO
 }
 \examples{
 
-## Load drug screen dataset for 1 drug
-data(drugScreening)
+## Load drug screen dataset and patient information for methotrexate
+data(drugScreeningMethoSet)
+data(patientInfoMethoSet)
+
+## Retain unreplicated samples
+cleanData <- selectNoReplicateOrganoids(drugScreening=drugScreeningMethoSet,
+    patientInfo=patientInfoMethoSet)
 
 ## Calculate the extreme organoids for the methotrexate drug screening
 ## using a quantile of 1/3
-results <- getClassOneDrug(drugScreening=drugScreening,
+results <- getClassOneDrug(drugScreening=cleanData,
     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
     doseType="Averaged", quantile=1/3)
 
-## TODO
-results$extreme
+## Fisher test on ancestry
+fisherT <- fisherCategoricalVariable(drugQuantile=results,
+    category="ancestry")
 
 }
 \author{
