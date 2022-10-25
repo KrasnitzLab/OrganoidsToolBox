@@ -210,6 +210,90 @@ NULL
 NULL
 
 
+
+
+#' Simple demo drug screening for one drug (Methotrexate). The results have
+#' been generated for demonstration purpose. There is two studies present in
+#' the dataset. There is also only two types of screening in the dataset. Some
+#' entries have a value for a second drug. There is not entry for a third
+#' drug. There is no background drug. At last, there is two types of dosage.
+#'
+#' @name drugScreeningMethoSet
+#'
+#' @docType data
+#'
+#' @aliases drugScreeningMethoSet
+#'
+#' @format a \code{data.frame} with the following columns:
+#' \itemize{
+#' \item \code{organoid_id} { a \code{character} string representing the
+#' organoid identifier. }
+#' \item \code{timestamp} { a \code{character} string representing the date
+#' when the screening was done. }
+#' \item \code{study} { a \code{character} string representing the study. }
+#' \item \code{screen_type} { a \code{character} string representing the
+#' screen type. }
+#' \item \code{drug_a} { a \code{character} string representing the name of
+#' the first drug used for the drug screen. There is at least one drug used
+#' in a drug screening.}
+#' \item \code{drug_b} { a \code{character} string representing the name of
+#' the second drug used for the drug screen. When no second drug has been
+#' used, the value is \code{'N/A'}.  }
+#' \item \code{drug_c} {  a \code{character} string representing the name of
+#' the third drug used for the drug screen. When no third drug has been
+#' used, the value is \code{'N/A'}.  }
+#' \item \code{drug_background} { a \code{character} string representing the
+#' name of
+#' the drug used as background for the drug screen. When no drug has been used
+#' as background, the value is \code{'N/A'}. }
+#' \item \code{dosage_type} { a \code{character} string representing the type
+#' of dosage. }
+#' \item \code{relative_auc} { a \code{numeric}
+#' representing the relative AUC (area under the curve) for the specified
+#' organoids under specific conditions.  The AUC is calculated using the
+#' percentage of viability under different drug concentrations. So, the same
+#' relative AUC is repeated on multiple lines.}
+#' }
+#'
+#' @seealso
+#' \itemize{
+#' \item \code{\link{getClassOneDrug}} { for selecting the organoids
+#' with sensitive and resistant behavior for a
+#' specific drug screening.}
+#' }
+#'
+#' @usage data(drugScreeningMethoSet)
+#'
+#' @keywords datasets
+#'
+#' @examples
+#'
+#' ## Load drug screen dataset and patient information for methotrexate
+#' data(drugScreeningMethoSet)
+#' data(patientInfoMethoSet)
+#'
+#' ## Retain unreplicated samples
+#' cleanData <- selectNoReplicateOrganoids(drugScreening=drugScreeningMethoSet,
+#'     patientInfo=patientInfoMethoSet)
+#'
+#' ## Calculate the extreme organoids for the methotrexate drug screening
+#' ## using a quantile of 1/3
+#' results <- getClassOneDrug(drugScreening=cleanData,
+#'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
+#'     doseType="Averaged", quantile=1/3)
+#'
+#' ## The information of the extreme organoids is found it the 'extreme' entry
+#' head(results$extreme)
+#'
+#' ## Fisher test on ancestry
+#' fisherT <- fisherCategoricalVariable(drugQuantile=results,
+#'     category="ancestry")
+#'
+#' fisherT
+#'
+NULL
+
+
 #' Simple demo patient information dataset. The information is related to the
 #' organoids present in the 'drugScreening' dataset.
 #'
@@ -235,9 +319,12 @@ NULL
 #' \item \code{\link{selectNoReplicateOrganoids}} { for selecting
 #' the unrelated samples (only one sample per patient) from a drug screening
 #' dataset.}
+#' \item \code{\link{fisherCategoricalVariable}} { for running Fisher tests
+#' in the sensitive and resistant groups using a categorical value
+#' from a drug screening dataset.}
 #' }
 #'
-#' @usage data(drugScreening)
+#' @usage data(patientInfo)
 #'
 #' @keywords datasets
 #'
@@ -255,6 +342,74 @@ NULL
 #'
 #' ## The drug screen dataset has been filtered
 #' results
+#'
+#'
+NULL
+
+
+#' Simple demo patient information dataset. The information is related to the
+#' organoids present in the 'drugScreening' dataset.
+#'
+#' @name patientInfoMethoSet
+#'
+#' @docType data
+#'
+#' @aliases patientInfoMethoSet
+#'
+#' @format a \code{data.frame} with the following columns:
+#' \itemize{
+#' \item \code{organoid_id} { a \code{character} string representing the
+#' organoid identifier. }
+#' \item \code{patient_id} { a \code{character} string representing the patient
+#' identifier. }
+#' \item \code{ancestry} { a \code{character} string representing the patient
+#' genetic ancestry. }
+#' \item \code{BMI} { a \code{character} string representing the patient
+#' BMI class. }
+#' }
+#'
+#' @seealso
+#' \itemize{
+#' \item \code{\link{getClassOneDrug}} { for selecting the samples
+#' with sensitive and resistant behavior for a
+#' specific drug screening dataset.}
+#' \item \code{\link{selectNoReplicateOrganoids}} { for selecting
+#' the unrelated samples (only one sample per patient) from a drug screening
+#' dataset.}
+#' \item \code{\link{fisherCategoricalVariable}} { for running Fisher tests
+#' in the sensitive and resistant groups using a categorical value
+#' from a drug screening dataset.}
+#' }
+#'
+#' @usage data(patientInfoMethoSet)
+#'
+#' @keywords datasets
+#'
+#' @examples
+#'
+#' ## Load drug screen dataset for methotrexate dataset
+#' data(drugScreening)
+#'
+#' ## Load patient information dataset for methotrexate dataset
+#' data(patientInfoMethoSet)
+#'
+#' ## Retain unreplicated samples
+#' cleanData <- selectNoReplicateOrganoids(drugScreening=drugScreeningMethoSet,
+#'     patientInfo=patientInfoMethoSet)
+#'
+#' ## Calculate the extreme organoids for the methotrexate drug screening
+#' ## using a quantile of 1/3
+#' results <- getClassOneDrug(drugScreening=cleanData,
+#'     drugName="Methotrexate", study="MEGA-TEST", screenType="TEST-01",
+#'     doseType="Averaged", quantile=1/4)
+#'
+#' ## The information of the extreme organoids is found it the 'extreme' entry
+#' head(results$extreme)
+#'
+#' ## Fisher test on BMI
+#' fisherT <- fisherCategoricalVariable(drugQuantile=results, category="BMI")
+#'
+#' fisherT
 #'
 #'
 NULL
