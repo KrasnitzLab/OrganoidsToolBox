@@ -92,29 +92,23 @@ categorical variable.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Load drug screen dataset for 1 drug</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">drugScreening</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Load drug screen dataset and patient information for methotrexate</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">drugScreeningMethoSet</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">patientInfoMethoSet</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Retain unreplicated samples</span></span></span>
+<span class="r-in"><span><span class="va">cleanData</span> <span class="op">&lt;-</span> <span class="fu"><a href="selectNoReplicateOrganoids.html">selectNoReplicateOrganoids</a></span><span class="op">(</span>drugScreening<span class="op">=</span><span class="va">drugScreeningMethoSet</span>,</span></span>
+<span class="r-in"><span>    patientInfo<span class="op">=</span><span class="va">patientInfoMethoSet</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Calculate the extreme organoids for the methotrexate drug screening</span></span></span>
 <span class="r-in"><span><span class="co">## using a quantile of 1/3</span></span></span>
-<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="getClassOneDrug.html">getClassOneDrug</a></span><span class="op">(</span>drugScreening<span class="op">=</span><span class="va">drugScreening</span>,</span></span>
+<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="getClassOneDrug.html">getClassOneDrug</a></span><span class="op">(</span>drugScreening<span class="op">=</span><span class="va">cleanData</span>,</span></span>
 <span class="r-in"><span>    drugName<span class="op">=</span><span class="st">"Methotrexate"</span>, study<span class="op">=</span><span class="st">"MEGA-TEST"</span>, screenType<span class="op">=</span><span class="st">"TEST-01"</span>,</span></span>
 <span class="r-in"><span>    doseType<span class="op">=</span><span class="st">"Averaged"</span>, quantile<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## TODO</span></span></span>
-<span class="r-in"><span><span class="va">results</span><span class="op">$</span><span class="va">extreme</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    organoid_id relative_auc     group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        hT192     33.11044 SENSITIVE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        hT102     46.11044 SENSITIVE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       hT3312     46.61114 SENSITIVE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       hT1001     52.61044 SENSITIVE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       hT2211     53.57622   AVERAGE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        hT322     55.22300   AVERAGE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7       hT1919     56.53002   AVERAGE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       hT1051     60.28033 RESISTANT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       hT1082     68.93726 RESISTANT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      hT2212     75.67628 RESISTANT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11       hT999     97.31222 RESISTANT</span>
+<span class="r-in"><span><span class="co">## Fisher test on ancestry</span></span></span>
+<span class="r-in"><span><span class="va">fisherT</span> <span class="op">&lt;-</span> <span class="fu">fisherCategoricalVariable</span><span class="op">(</span>drugQuantile<span class="op">=</span><span class="va">results</span>,</span></span>
+<span class="r-in"><span>    category<span class="op">=</span><span class="st">"ancestry"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

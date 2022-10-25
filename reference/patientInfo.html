@@ -61,7 +61,7 @@ organoids present in the 'drugScreening' dataset.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">drugScreening</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">patientInfo</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="format">
@@ -80,6 +80,9 @@ specific drug screening dataset.</p></li>
 <li><p><code><a href="selectNoReplicateOrganoids.html">selectNoReplicateOrganoids</a></code>  for selecting
 the unrelated samples (only one sample per patient) from a drug screening
 dataset.</p></li>
+<li><p><code><a href="fisherCategoricalVariable.html">fisherCategoricalVariable</a></code>  for running Fisher tests
+in the sensitive and resistant groups using a categorical value
+from a drug screening dataset.</p></li>
 </ul></div>
     </div>
 
@@ -100,59 +103,59 @@ dataset.</p></li>
 <span class="r-in"><span><span class="va">results</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        organoid_id Column1  plate passage_number timestamp      study</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> hT1001      hT1001       2 Plate1            P16  2/2/1988  MEGA-TEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT102        hT102       4 Plate1            P14  2/2/1994  MEGA-TEST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT102        hT102       5 Plate1            P14  2/2/1994  MEGA-TEST</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> hT1919      hT1919       5 Plate1            P13  1/1/1970  MEGA-TEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT192        hT192       5 Plate1            P11  2/2/1994  MEGA-TEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211      hT2211       3 Plate1            P14  1/1/1970  MEGA-TEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212      hT2212       3 Plate1            P29  1/1/1970  MEGA-TEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213      hT2213       3 Plate2            P12  1/1/1970  MEGA-TEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251      hT2251       4 Plate1            P13  1/1/1970 SUPER-TEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT322        hT322       3 Plate1            P11  1/1/2022  MEGA-TEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT999        hT999       5 Plate1             P9  2/2/1994  MEGA-TEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        screen_type   z_prime       drug_a   drug_b drug_c drug_background</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT1001     TEST-01 0.2732018 Methotrexate      N/A    N/A             N/A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT102      TEST-01 0.2882018 Methotrexate      N/A    N/A             N/A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT1919     TEST-01 0.4589293 Methotrexate      N/A    N/A             N/A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT192      TEST-01 0.2120181 Methotrexate      N/A    N/A             N/A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211     TEST-01 0.0728753 Methotrexate      N/A    N/A             N/A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212     TEST-01 0.0733353 Methotrexate Abraxane    N/A             N/A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213     TEST-02 0.0718753 Methotrexate      N/A    N/A             N/A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251     TEST-01 0.2500374 Methotrexate      N/A    N/A             N/A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT322      TEST-01 0.4219293 Methotrexate      N/A    N/A             N/A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT999      TEST-01 0.5520181 Methotrexate      N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT192        hT192       4 Plate1            P11  2/2/1994  MEGA-TEST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211      hT2211       5 Plate1            P14  1/1/1970  MEGA-TEST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212      hT2212       4 Plate1            P29  1/1/1970  MEGA-TEST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213      hT2213       5 Plate2            P12  1/1/1970  MEGA-TEST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251      hT2251       5 Plate1            P13  1/1/1970 SUPER-TEST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT322        hT322       4 Plate1            P11  1/1/2022  MEGA-TEST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT999        hT999       4 Plate1             P9  2/2/1994  MEGA-TEST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        screen_type   z_prime       drug_a drug_b drug_c drug_background</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT1001     TEST-01 0.2732018 Methotrexate    N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT102      TEST-01 0.2882018 Methotrexate    N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT1919     TEST-01 0.4589293 Methotrexate    N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT192      TEST-01 0.2120181 Methotrexate    N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211     TEST-01 0.0728753 Methotrexate    N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212     TEST-01 0.0744753 Methotrexate    N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213     TEST-02 0.0718753 Methotrexate    N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251     TEST-01 0.2500374 Methotrexate    N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT322      TEST-01 0.4219293 Methotrexate    N/A    N/A             N/A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT999      TEST-01 0.5520181 Methotrexate    N/A    N/A             N/A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        dosage_type dosage_concentration_a dosage_concentration_b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT1001    Averaged             -1.8477117                      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT102     Averaged             -1.8017117                      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT1919    Averaged              1.4533183                      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT192     Averaged              1.7446352                      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211    Averaged              0.3961993                      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212    Averaged              0.5221500                      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213    Averaged             -1.3316204                      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251    Averaged              1.3533183                      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT322     Averaged              0.8338696                      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT999     Averaged              1.7446352                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT1001    Averaged              0.8518696                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT102     Averaged              0.3331993                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT1919    Averaged             -1.8477117                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT192     Averaged             -1.1180171                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211    Averaged             -0.1481304                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212    Averaged             -0.6716204                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213    Averaged             -0.6446204                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251    Averaged             -1.3327707                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT322     Averaged             -1.4377117                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT999     Averaged              1.9116352                      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        dosage_concentration_c dosage_concentration_background percent_viability</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT1001                      0                               0         89.929934</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT102                       0                               0         81.119934</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT1919                      0                               0         14.827542</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT192                       0                               0          9.222666</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211                      0                               0         45.745011</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212                      0                               0          5.805500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213                      0                               0         85.624298</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251                      0                               0         22.522997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT322                       0                               0         85.389711</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT999                       0                               0         95.222666</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              ic50       auc relative_auc  patient_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT1001  1.0722432 218.00535    52.610445 Patient_001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT102   1.0002432 201.00535    46.110445 Patient_008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT1919  1.3257419 234.24714    56.530018 Patient_002</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT192   0.9002432 187.00535    33.110445 Patient_009</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211  1.1417485 222.00729    53.576219 Patient_003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212  0.7444589  49.99956     6.330331 Patient_004</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213  0.8162142 242.36746    71.676280 Patient_005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251  1.5223589 248.88756    63.380332 Patient_006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT322  14.1157419 931.14714    55.223002 Patient_007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hT999   0.9880232 287.00535    97.312221 Patient_010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT1001                      0                               0          30.61149</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT102                       0                               0          41.10780</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT1919                      0                               0          71.40605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT192                       0                               0          76.11993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211                      0                               0          80.90499</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212                      0                               0          75.93872</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213                      0                               0          71.91172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251                      0                               0          80.22052</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT322                       0                               0         110.33605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT999                       0                               0          95.94550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              ic50      auc relative_auc  patient_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT1001  1.0722432 218.0053     52.61044 Patient_001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT102   1.0002432 201.0053     46.11044 Patient_008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT1919  1.3257419 234.2471     56.53002 Patient_002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT192   0.9002432 187.0053     33.11044 Patient_009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2211  1.1417485 222.0073     53.57622 Patient_003</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2212  0.8862142 246.3675     75.67628 Patient_004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2213  0.8162142 242.3675     71.67628 Patient_005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT2251  1.5223589 248.8876     63.38033 Patient_006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT322  14.1157419 931.1471     55.22300 Patient_007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hT999   0.9880232 287.0054     97.31222 Patient_010</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -25,6 +25,9 @@
     <loc>/reference/drugScreening.html</loc>
   </url>
   <url>
+    <loc>/reference/drugScreeningMethoSet.html</loc>
+  </url>
+  <url>
     <loc>/reference/filterDrugScreenOneDrug.html</loc>
   </url>
   <url>
@@ -47,6 +50,9 @@
   </url>
   <url>
     <loc>/reference/patientInfo.html</loc>
+  </url>
+  <url>
+    <loc>/reference/patientInfoMethoSet.html</loc>
   </url>
   <url>
     <loc>/reference/plotDrugAUCDensityCurve.html</loc>
